@@ -1,0 +1,3031 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sherlock Holmes y la Verdad Oculta — V1.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,300;1,9..144,600&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:       #1a1614;
+    --ink-light: #2e2623;
+    --parchment: #f4ead5;
+    --parchment-dark: #e8d9b8;
+    --parchment-mid: #ede0c4;
+    --red:       #8b1e1e;
+    --red-light: #a32424;
+    --green:     #2e5d4b;
+    --green-light: #3a7460;
+    --amber:     #c4813a;
+    --sepia:     #7a5c3a;
+    --muted:     #6b5a4a;
+    --border:    rgba(26,22,20,0.18);
+    --shadow-sm: 0 2px 8px rgba(26,22,20,0.12);
+    --shadow-md: 0 6px 24px rgba(26,22,20,0.18);
+    --shadow-lg: 0 16px 48px rgba(26,22,20,0.24);
+    --radius:    4px;
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body:    'Instrument Sans', sans-serif;
+    --font-mono:    'JetBrains Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    background-color: var(--parchment);
+    color: var(--ink);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ── NOISE TEXTURE OVERLAY ─────────────────── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.6;
+  }
+
+  /* ── HEADER ────────────────────────────────── */
+  .site-header {
+    background: var(--ink);
+    color: var(--parchment);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 3px solid var(--red);
+    box-shadow: var(--shadow-md);
+  }
+
+  .header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .logo-block {
+    padding: 20px 32px 20px 0;
+    border-right: 1px solid rgba(244,234,213,0.12);
+    flex-shrink: 0;
+  }
+
+  .logo-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--red-light);
+    opacity: 0.9;
+    margin-bottom: 4px;
+  }
+
+  .logo-title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--parchment);
+    line-height: 1.15;
+    font-optical-sizing: auto;
+  }
+
+  .logo-title em {
+    font-style: italic;
+    font-weight: 300;
+    color: var(--parchment-mid);
+  }
+
+  .logo-sub {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--amber);
+    margin-top: 5px;
+    letter-spacing: 1px;
+  }
+
+  .header-phrase {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: 0 32px;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 13px;
+    color: rgba(244,234,213,0.55);
+    line-height: 1.4;
+  }
+
+  .header-badge {
+    display: flex;
+    align-items: center;
+    padding: 0 0 0 24px;
+    flex-shrink: 0;
+  }
+
+  .version-chip {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    background: var(--red);
+    color: var(--parchment);
+    padding: 4px 10px;
+    border-radius: 2px;
+    letter-spacing: 1px;
+  }
+
+  /* ── NAVIGATION TABS ───────────────────────── */
+  .nav-tabs {
+    background: var(--ink-light);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .nav-inner::-webkit-scrollbar { display: none; }
+
+  .tab-btn {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(244,234,213,0.5);
+    background: none;
+    border: none;
+    padding: 14px 20px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+    position: relative;
+  }
+
+  .tab-btn:hover { color: var(--parchment); }
+
+  .tab-btn.active {
+    color: var(--amber);
+    border-bottom-color: var(--amber);
+  }
+
+  /* ── MAIN LAYOUT ───────────────────────────── */
+  .main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .tab-panel { display: none; animation: fadeIn 0.3s ease; }
+  .tab-panel.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SECTION HEADERS ───────────────────────── */
+  .section-header {
+    margin-bottom: 32px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 6px;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.15;
+    font-optical-sizing: auto;
+  }
+
+  .section-desc {
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 14px;
+    max-width: 600px;
+  }
+
+  /* ── HOME PANEL ────────────────────────────── */
+  .home-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 32px;
+  }
+
+  @media (max-width: 700px) { .home-grid { grid-template-columns: 1fr; } }
+
+  .home-hero {
+    grid-column: 1 / -1;
+    background: var(--ink);
+    color: var(--parchment);
+    padding: 40px 48px;
+    border-radius: var(--radius);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .home-hero::before {
+    content: '"';
+    position: absolute;
+    right: 32px;
+    top: -20px;
+    font-family: var(--font-display);
+    font-size: 200px;
+    color: rgba(244,234,213,0.04);
+    line-height: 1;
+    font-weight: 900;
+    pointer-events: none;
+  }
+
+  .hero-quote {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.5;
+    color: var(--parchment-mid);
+    margin-bottom: 16px;
+  }
+
+  .hero-attr {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--amber);
+    letter-spacing: 1px;
+  }
+
+  .home-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.2s;
+  }
+
+  .home-card:hover { box-shadow: var(--shadow-md); }
+
+  .home-card-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    margin-bottom: 14px;
+  }
+
+  .icon-red   { background: rgba(139,30,30,0.1); }
+  .icon-green { background: rgba(46,93,75,0.1); }
+  .icon-amber { background: rgba(196,129,58,0.1); }
+  .icon-sepia { background: rgba(122,92,58,0.1); }
+
+  .home-card h3 {
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-optical-sizing: auto;
+  }
+
+  .home-card p { font-size: 13px; color: var(--muted); line-height: 1.55; }
+
+  .pillar-list {
+    margin-top: 32px;
+  }
+
+  .pillar-item {
+    display: flex;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: flex-start;
+  }
+
+  .pillar-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--red);
+    background: rgba(139,30,30,0.08);
+    padding: 3px 8px;
+    border-radius: 2px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .pillar-text strong { font-weight: 600; font-size: 14px; }
+  .pillar-text p { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+  /* ── CASE CARDS ────────────────────────────── */
+  .cases-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 8px;
+  }
+
+  .case-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.25s, transform 0.25s;
+    position: relative;
+  }
+
+  .case-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+
+  .case-card.locked {
+    opacity: 0.62;
+    filter: grayscale(0.3);
+  }
+
+  .case-header {
+    padding: 18px 20px 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .case-level-block {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .case-level-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .case-level-num {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 900;
+    line-height: 1;
+    color: var(--ink);
+    font-optical-sizing: auto;
+  }
+
+  .case-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+  }
+
+  .status-chip {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+
+  .status-active  { background: rgba(46,93,75,0.12); color: var(--green); border: 1px solid rgba(46,93,75,0.2); }
+  .status-locked  { background: rgba(122,92,58,0.1);  color: var(--sepia); border: 1px solid rgba(122,92,58,0.2); }
+  .status-epic    { background: rgba(139,30,30,0.1);  color: var(--red);   border: 1px solid rgba(139,30,30,0.2); }
+
+  .complexity-bar {
+    display: flex;
+    gap: 3px;
+  }
+
+  .complexity-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--parchment-dark);
+  }
+
+  .complexity-dot.filled { background: var(--amber); }
+
+  .case-body { padding: 16px 20px 20px; }
+
+  .case-discipline {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--red);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .case-title {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.2;
+    margin-bottom: 10px;
+    font-optical-sizing: auto;
+  }
+
+  .case-premise {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.55;
+    margin-bottom: 14px;
+  }
+
+  .case-question {
+    background: var(--parchment);
+    border-left: 3px solid var(--amber);
+    padding: 10px 14px;
+    font-size: 12.5px;
+    color: var(--ink-light);
+    font-style: italic;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    margin-bottom: 14px;
+    line-height: 1.5;
+  }
+
+  .case-footer {
+    border-top: 1px solid var(--border);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .badge-tag {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    background: rgba(46,93,75,0.08);
+    color: var(--green);
+    border: 1px solid rgba(46,93,75,0.15);
+    padding: 3px 8px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+  }
+
+  .lock-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(244,234,213,0.4);
+    backdrop-filter: blur(1px);
+  }
+
+  .lock-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--ink);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    box-shadow: var(--shadow-md);
+  }
+
+  /* ── BADGES ────────────────────────────────── */
+  .badges-filter {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 7px 16px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: white;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+
+  .filter-btn:hover { border-color: var(--ink); color: var(--ink); }
+  .filter-btn.active { background: var(--ink); color: var(--parchment); border-color: var(--ink); }
+
+  .badges-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
+  .badge-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.2s, transform 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .badge-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+
+  .badge-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+  }
+
+  .badge-card.fam-1::before { background: var(--amber); }
+  .badge-card.fam-2::before { background: var(--red); }
+  .badge-card.fam-3::before { background: var(--green); }
+  .badge-card.fam-4::before { background: #5b3fa0; }
+  .badge-card.fam-5::before { background: var(--sepia); }
+  .badge-card.fam-6::before { background: #2980b9; }
+  .badge-card.fam-7::before { background: #16a085; }
+  .badge-card.fam-8::before { background: #d35400; }
+  .badge-card.fam-9::before { background: #8e44ad; }
+  .badge-card.fam-10::before { background: var(--red); background: linear-gradient(180deg, var(--red), var(--amber)); }
+
+  .badge-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+
+  .badge-icon-wrap {
+    font-size: 28px;
+    line-height: 1;
+  }
+
+  .badge-level {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 1px;
+    background: var(--parchment);
+    color: var(--muted);
+    padding: 3px 7px;
+    border-radius: 2px;
+  }
+
+  .badge-level.epic { background: rgba(139,30,30,0.1); color: var(--red); }
+
+  .badge-id-line {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--muted);
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
+  }
+
+  .badge-name {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.2;
+    margin-bottom: 8px;
+    font-optical-sizing: auto;
+  }
+
+  .badge-criterion {
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .badge-type {
+    margin-top: 12px;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: var(--muted);
+    text-transform: uppercase;
+    border-top: 1px solid var(--border);
+    padding-top: 10px;
+  }
+
+  /* ── GLOSSARY ──────────────────────────────── */
+  .search-wrap {
+    position: relative;
+    margin-bottom: 28px;
+    max-width: 480px;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: var(--muted);
+    pointer-events: none;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 13px 16px 13px 44px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: white;
+    color: var(--ink);
+    outline: none;
+    box-shadow: var(--shadow-sm);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .search-input:focus {
+    border-color: var(--green);
+    box-shadow: 0 0 0 3px rgba(46,93,75,0.12);
+  }
+
+  .search-input::placeholder { color: rgba(122,92,58,0.5); }
+
+  .glossary-count {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+
+  .glossary-list { display: flex; flex-direction: column; gap: 2px; }
+
+  .glossary-item {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .glossary-term-btn {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 18px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    text-align: left;
+    gap: 12px;
+    transition: background 0.15s;
+  }
+
+  .glossary-term-btn:hover { background: var(--parchment); }
+
+  .term-name {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    font-optical-sizing: auto;
+  }
+
+  .term-cat {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    color: var(--red);
+    background: rgba(139,30,30,0.07);
+    padding: 2px 8px;
+    border-radius: 20px;
+    white-space: nowrap;
+    letter-spacing: 0.3px;
+  }
+
+  .term-chevron { color: var(--muted); font-size: 11px; transition: transform 0.2s; }
+  .glossary-item.open .term-chevron { transform: rotate(180deg); }
+
+  .glossary-body {
+    display: none;
+    padding: 0 18px 16px;
+    border-top: 1px solid var(--border);
+    background: var(--parchment);
+  }
+
+  .glossary-item.open .glossary-body { display: block; }
+
+  .def-brief {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--ink);
+    margin: 12px 0 6px;
+    line-height: 1.5;
+  }
+
+  .def-operative {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+
+  .def-example {
+    margin-top: 10px;
+    padding: 8px 12px;
+    background: rgba(46,93,75,0.08);
+    border-left: 3px solid var(--green);
+    font-size: 12px;
+    font-style: italic;
+    color: var(--green);
+    border-radius: 0 var(--radius) var(--radius) 0;
+  }
+
+  .no-results {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 18px;
+  }
+
+  /* ── TEMPLATES ─────────────────────────────── */
+  .templates-list { display: flex; flex-direction: column; gap: 16px; }
+
+  .template-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    transition: box-shadow 0.2s;
+  }
+
+  .template-card:hover { box-shadow: var(--shadow-md); }
+
+  .template-icon-col {
+    flex-shrink: 0;
+    width: 52px;
+    height: 52px;
+    background: var(--parchment);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+  }
+
+  .template-content { flex: 1; }
+
+  .template-version {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--amber);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+
+  .template-name {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 8px;
+    font-optical-sizing: auto;
+  }
+
+  .template-desc {
+    font-size: 13.5px;
+    color: var(--muted);
+    line-height: 1.55;
+    margin-bottom: 14px;
+  }
+
+  .template-fields {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+
+  .field-tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--sepia);
+    background: rgba(122,92,58,0.08);
+    border: 1px solid rgba(122,92,58,0.15);
+    padding: 3px 9px;
+    border-radius: 20px;
+  }
+
+  .template-actions { display: flex; gap: 10px; }
+
+  .btn-download {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: var(--radius);
+    text-decoration: none;
+    transition: all 0.18s;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-primary {
+    background: var(--ink);
+    color: var(--parchment);
+  }
+
+  .btn-primary:hover { background: var(--ink-light); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--border);
+  }
+
+  .btn-secondary:hover { background: var(--parchment); }
+
+  /* ── RESPONSIVE ────────────────────────────── */
+  @media (max-width: 640px) {
+    .header-phrase { display: none; }
+    .logo-title { font-size: 18px; }
+    .template-card { flex-direction: column; }
+    .home-hero { padding: 28px 24px; }
+  }
+
+  /* ── SCROLL ────────────────────────────────── */
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: var(--parchment-dark); }
+  ::-webkit-scrollbar-thumb { background: rgba(26,22,20,0.2); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(26,22,20,0.35); }
+
+  /* ── HOME CARD LINKS ───────────────────────── */
+  .home-card-link { cursor: pointer; position: relative; }
+  .home-card-link:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+  .home-card-link { transition: box-shadow 0.2s, transform 0.2s; }
+  .home-card-cta {
+    display: inline-block;
+    margin-top: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--red);
+    font-family: var(--font-mono);
+    letter-spacing: 0.5px;
+  }
+  .icon-blue { background: rgba(24,95,165,0.1); }
+
+  /* ── TEAMS ─────────────────────────────────── */
+  .teams-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+    cursor: pointer;
+    margin-bottom: 24px;
+    padding: 8px 14px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    transition: all 0.18s;
+  }
+  .teams-back:hover { background: var(--parchment); color: var(--ink); }
+
+  .teams-global-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .tg-stat {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+  }
+  .tg-stat-n { font-family: var(--font-display); font-size: 28px; font-weight: 700; line-height: 1; font-optical-sizing: auto; }
+  .tg-stat-l { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-top: 5px; }
+
+  .teams-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+  }
+  .team-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+    transition: box-shadow 0.2s, transform 0.2s;
+    position: relative;
+  }
+  .team-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+  .team-card-accent {
+    height: 4px;
+    width: 100%;
+  }
+  .team-card-body { padding: 20px; }
+  .team-id-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+  .team-code {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .team-status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    margin-top: 2px;
+  }
+  .team-name {
+    font-family: var(--font-display);
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.2;
+    margin-bottom: 3px;
+    font-optical-sizing: auto;
+  }
+  .team-faculty {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .team-case-tag {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--red);
+    background: rgba(139,30,30,0.07);
+    border: 1px solid rgba(139,30,30,0.15);
+    padding: 3px 9px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-bottom: 14px;
+  }
+  .team-prog-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 5px;
+    font-family: var(--font-mono);
+  }
+  .team-prog-track {
+    height: 5px;
+    background: var(--parchment-dark);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 14px;
+  }
+  .team-prog-fill { height: 100%; border-radius: 3px; }
+  .team-card-footer {
+    border-top: 1px solid var(--border);
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .team-mini-members {
+    display: flex;
+    gap: -4px;
+  }
+  .team-mini-av {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    font-weight: 600;
+    margin-left: -5px;
+  }
+  .team-mini-av:first-child { margin-left: 0; }
+  .team-footer-stats {
+    display: flex;
+    gap: 12px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--muted);
+  }
+  .team-footer-stat span { color: var(--ink); font-weight: 600; }
+
+  /* TEAM DETAIL */
+  .tdetail-header {
+    background: var(--ink);
+    color: var(--parchment);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .tdetail-header::after {
+    content: attr(data-teamname);
+    position: absolute;
+    right: -10px;
+    top: -20px;
+    font-family: var(--font-display);
+    font-size: 100px;
+    font-weight: 900;
+    color: rgba(244,234,213,0.04);
+    line-height: 1;
+    pointer-events: none;
+    font-optical-sizing: auto;
+  }
+  .tdetail-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 6px;
+  }
+  .tdetail-title {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--parchment);
+    margin-bottom: 4px;
+    font-optical-sizing: auto;
+  }
+  .tdetail-case {
+    font-size: 13px;
+    color: rgba(244,234,213,0.6);
+    margin-bottom: 16px;
+  }
+  .tdetail-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .tdetail-chip {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 1px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid rgba(244,234,213,0.2);
+    color: rgba(244,234,213,0.7);
+  }
+  .tdetail-chip.hi { background: rgba(46,93,75,0.3); border-color: rgba(46,93,75,0.5); color: #7ecba5; }
+
+  .tdetail-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .tdetail-stat {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+  }
+  .tdetail-stat-n { font-family: var(--font-display); font-size: 26px; font-weight: 700; color: var(--ink); line-height: 1; font-optical-sizing: auto; }
+  .tdetail-stat-l { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+
+  .tdetail-section-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+  .members-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  @media (max-width: 700px) { .members-grid { grid-template-columns: repeat(3, 1fr); } }
+  .member-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 12px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+  }
+  .member-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 15px;
+    margin: 0 auto 10px;
+    font-family: var(--font-mono);
+  }
+  .member-q5-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: var(--amber);
+    color: white;
+    font-family: var(--font-mono);
+    font-size: 8px;
+    font-weight: 700;
+    padding: 2px 5px;
+    border-radius: 3px;
+    letter-spacing: 0.5px;
+  }
+  .member-name {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.2;
+    margin-bottom: 4px;
+    font-optical-sizing: auto;
+  }
+  .member-role {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 5px;
+  }
+  .member-spec { font-size: 11px; color: var(--muted); line-height: 1.4; }
+  .member-contrib {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--muted);
+    font-style: italic;
+    line-height: 1.4;
+  }
+
+  .tdetail-two-col {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  @media (max-width: 720px) { .tdetail-two-col { grid-template-columns: 1fr; } }
+  .tdetail-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    box-shadow: var(--shadow-sm);
+  }
+  .tcase-question {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--ink);
+    border-left: 3px solid var(--amber);
+    padding: 10px 14px;
+    background: var(--parchment);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    margin-bottom: 14px;
+    line-height: 1.5;
+  }
+  .hypothesis-row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin-bottom: 8px;
+  }
+  .hyp-tag {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    background: var(--parchment-dark);
+    color: var(--sepia);
+    padding: 3px 7px;
+    border-radius: 3px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .hyp-text { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+  .hyp-status {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    padding: 2px 7px;
+    border-radius: 10px;
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+  .hyp-strong { background: rgba(46,93,75,0.1); color: var(--green); }
+  .hyp-open { background: rgba(196,129,58,0.1); color: var(--amber); }
+  .hyp-weak { background: rgba(122,92,58,0.1); color: var(--sepia); }
+
+  .tprog-bar-track {
+    height: 8px;
+    background: var(--parchment-dark);
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 8px 0 4px;
+  }
+  .tprog-bar-fill { height: 100%; border-radius: 4px; }
+  .tprog-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px; }
+  .tprog-label { font-size: 12px; color: var(--muted); }
+  .tprog-pct { font-family: var(--font-mono); font-size: 13px; font-weight: 600; color: var(--ink); }
+
+  .tbadges-grid { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .tbadge-pill {
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+  .tbadge-earned { background: rgba(46,93,75,0.1); color: var(--green); border: 1px solid rgba(46,93,75,0.2); }
+  .tbadge-pending { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+
+  .tdetail-log {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 20px;
+  }
+  .tlog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .tlog-sesid {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--muted);
+    background: var(--parchment);
+    padding: 3px 9px;
+    border-radius: 3px;
+  }
+  .tlog-quien { font-size: 12px; color: var(--muted); }
+  .tlog-body {
+    font-size: 13px;
+    color: var(--ink-light);
+    line-height: 1.65;
+    border-left: 3px solid var(--parchment-dark);
+    padding-left: 14px;
+    margin-bottom: 14px;
+  }
+  .tlog-ai-section {
+    background: var(--parchment);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+  }
+  .tlog-ai-title {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .tlog-ai-row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .tlog-ai-tool {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    background: rgba(24,95,165,0.1);
+    color: #185fa5;
+    padding: 3px 8px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+  .tlog-ai-text { font-size: 12.5px; color: var(--muted); flex: 1; line-height: 1.5; }
+  .tlog-ai-ok {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    padding: 3px 8px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+  .tlog-ai-ok.ok { background: rgba(46,93,75,0.1); color: var(--green); }
+  .tlog-ai-ok.pending { background: rgba(196,129,58,0.1); color: var(--amber); }
+
+  .evidence-timeline {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    box-shadow: var(--shadow-sm);
+  }
+  .ev-row {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .ev-row:last-child { border-bottom: none; }
+  .ev-id {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    background: var(--parchment-dark);
+    color: var(--sepia);
+    padding: 3px 8px;
+    border-radius: 3px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .ev-type {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--muted);
+    text-transform: uppercase;
+    flex-shrink: 0;
+    margin-top: 3px;
+    width: 60px;
+  }
+  .ev-desc { font-size: 12.5px; color: var(--ink); flex: 1; line-height: 1.4; }
+  .ev-status {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    padding: 2px 7px;
+    border-radius: 10px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .ev-validated { background: rgba(46,93,75,0.1); color: var(--green); }
+  .ev-analysis { background: rgba(196,129,58,0.1); color: var(--amber); }
+  .ev-captured { background: rgba(24,95,165,0.1); color: #185fa5; }
+
+  /* ── MODALS ─────────────────────────────────── */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(26,22,20,0.74);
+    z-index: 600;
+    display: flex; align-items: flex-start; justify-content: center;
+    padding: 24px 14px 48px; overflow-y: auto;
+    animation: fadeIn 0.18s ease;
+  }
+  .modal-box {
+    background: var(--parchment); border-radius: var(--radius);
+    max-width: 820px; width: 100%; position: relative;
+    box-shadow: var(--shadow-lg); margin: auto; flex-shrink: 0;
+  }
+  .modal-x {
+    position: absolute; top: 14px; right: 14px; z-index: 10;
+    background: rgba(26,22,20,0.14); border: none; border-radius: 50%;
+    width: 30px; height: 30px; cursor: pointer; font-size: 15px;
+    color: var(--ink); display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s;
+  }
+  .modal-x:hover { background: rgba(26,22,20,0.24); }
+
+  /* — Case modal — */
+  .cm-header { background: var(--ink); border-radius: var(--radius) var(--radius) 0 0; padding: 26px 32px; position: relative; overflow: hidden; }
+  .cm-bg-num { position: absolute; right: 20px; top: 0; font-family: var(--font-display); font-size: 110px; font-weight: 900; color: rgba(244,234,213,0.05); line-height: 1; pointer-events: none; font-optical-sizing: auto; }
+  .cm-eyebrow { font-family: var(--font-mono); font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--amber); margin-bottom: 5px; }
+  .cm-title { font-family: var(--font-display); font-size: 22px; font-weight: 700; color: var(--parchment); margin-bottom: 3px; font-optical-sizing: auto; }
+  .cm-sub { font-size: 12px; color: rgba(244,234,213,0.55); margin-bottom: 14px; }
+  .cm-chips { display: flex; gap: 7px; flex-wrap: wrap; }
+  .cm-chip { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1px; padding: 3px 9px; border-radius: 20px; border: 1px solid rgba(244,234,213,0.18); color: rgba(244,234,213,0.6); }
+  .cm-chip.ok { background: rgba(46,93,75,0.3); border-color: rgba(46,93,75,0.5); color: #7ecba5; }
+  .cm-chip.epic { background: rgba(139,30,30,0.35); border-color: rgba(139,30,30,0.5); color: #f59999; }
+  .cm-body { padding: 22px 28px; }
+  .cm-question { font-family: var(--font-display); font-style: italic; font-size: 15px; color: var(--ink); border-left: 4px solid var(--amber); padding: 12px 16px; background: white; border-radius: 0 var(--radius) var(--radius) 0; margin-bottom: 18px; line-height: 1.5; }
+  .cm-slabel { font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .cm-premise { font-size: 13.5px; color: var(--muted); line-height: 1.65; margin-bottom: 18px; }
+  .cm-chips-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; }
+  .cm-comp { font-size: 12px; color: var(--ink); background: white; border: 1px solid var(--border); padding: 4px 12px; border-radius: 20px; }
+  .cm-evtype { font-size: 11px; font-family: var(--font-mono); color: var(--sepia); background: rgba(122,92,58,0.07); border: 1px solid rgba(122,92,58,0.15); padding: 3px 10px; border-radius: 20px; }
+  .cm-products { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 16px; margin-bottom: 18px; }
+  .cm-prod { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: var(--muted); padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .cm-prod:last-child { border-bottom: none; padding-bottom: 0; }
+  .cm-prod-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--amber); flex-shrink: 0; margin-top: 5px; }
+  .cm-diff { font-size: 12.5px; color: var(--muted); font-style: italic; background: rgba(139,30,30,0.05); border: 1px solid rgba(139,30,30,0.12); border-radius: var(--radius); padding: 11px 15px; margin-bottom: 18px; }
+  .cm-badge-row { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 10px; }
+  .cm-bmini { display: flex; align-items: center; gap: 6px; background: white; border: 1px solid var(--border); border-radius: 20px; padding: 5px 12px; cursor: pointer; font-size: 12px; color: var(--ink); transition: all 0.15s; }
+  .cm-bmini:hover { border-color: var(--green); color: var(--green); background: rgba(46,93,75,0.05); }
+  .cm-bmini-icon { font-size: 13px; }
+
+  /* Simulation block inside case modal */
+  .cm-sim { background: var(--ink); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 18px; }
+  .cm-sim-ey { font-family: var(--font-mono); font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--amber); margin-bottom: 7px; }
+  .cm-sim-team { font-family: var(--font-display); font-size: 17px; font-weight: 700; color: var(--parchment); margin-bottom: 2px; font-optical-sizing: auto; }
+  .cm-sim-phase { font-size: 12px; color: rgba(244,234,213,0.55); margin-bottom: 12px; }
+  .cm-sim-prog-wrap { background: rgba(244,234,213,0.1); border-radius: 3px; height: 6px; overflow: hidden; margin-bottom: 3px; }
+  .cm-sim-prog-fill { height: 100%; background: var(--green); border-radius: 3px; }
+  .cm-sim-prog-row { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 10px; color: rgba(244,234,213,0.4); margin-bottom: 14px; }
+  .cm-sim-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+  @media(max-width:580px){ .cm-sim-grid { grid-template-columns: 1fr; } }
+  .cm-sim-block { background: rgba(244,234,213,0.05); border-radius: 3px; padding: 10px 12px; }
+  .cm-sim-bl { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(244,234,213,0.35); margin-bottom: 7px; }
+  .cm-sim-hyp { display: flex; gap: 6px; align-items: flex-start; margin-bottom: 5px; font-size: 11px; color: rgba(244,234,213,0.65); line-height: 1.4; }
+  .cm-sim-h-tag { font-family: var(--font-mono); font-size: 8px; padding: 2px 5px; border-radius: 2px; flex-shrink: 0; margin-top: 1px; }
+  .h-strong { background: rgba(46,93,75,0.4); color: #7ecba5; }
+  .h-open { background: rgba(196,129,58,0.3); color: var(--amber); }
+  .h-weak { background: rgba(122,92,58,0.25); color: rgba(244,234,213,0.45); }
+  .cm-sim-ev { display: flex; gap: 7px; align-items: center; margin-bottom: 5px; font-size: 11px; color: rgba(244,234,213,0.6); line-height: 1.35; }
+  .cm-ev-id { font-family: var(--font-mono); font-size: 9px; color: var(--amber); flex-shrink: 0; }
+  .cm-ev-st { font-family: var(--font-mono); font-size: 8px; padding: 1px 5px; border-radius: 2px; flex-shrink: 0; }
+  .ev-ok { background: rgba(46,93,75,0.35); color: #7ecba5; }
+  .ev-an { background: rgba(196,129,58,0.3); color: var(--amber); }
+  .cm-sim-badges { display: flex; flex-wrap: wrap; gap: 5px; }
+  .csb-earned { font-size: 10px; background: rgba(46,93,75,0.3); color: #7ecba5; padding: 3px 8px; border-radius: 10px; }
+  .csb-prog { font-size: 10px; background: rgba(196,129,58,0.2); color: var(--amber); padding: 3px 8px; border-radius: 10px; }
+  .cm-sim-next { font-size: 12px; color: rgba(244,234,213,0.55); border-top: 1px solid rgba(244,234,213,0.1); padding-top: 10px; font-style: italic; }
+
+  /* — Badge modal — */
+  .bm-box { max-width: 560px; }
+  .bm-header { padding: 24px 28px 18px; border-bottom: 1px solid var(--border); display: flex; gap: 18px; align-items: flex-start; }
+  .bm-icon-big { font-size: 46px; line-height: 1; flex-shrink: 0; }
+  .bm-fam { font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  .bm-name { font-family: var(--font-display); font-size: 20px; font-weight: 700; color: var(--ink); margin-bottom: 8px; font-optical-sizing: auto; line-height: 1.2; }
+  .bm-tags { display: flex; gap: 7px; flex-wrap: wrap; }
+  .bm-tag { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1px; padding: 3px 9px; border-radius: 20px; }
+  .bm-t-level { background: var(--parchment-dark); color: var(--muted); }
+  .bm-t-type { background: rgba(46,93,75,0.1); color: var(--green); }
+  .bm-t-epic { background: rgba(139,30,30,0.1); color: var(--red); }
+  .bm-t-q5 { background: rgba(196,129,58,0.1); color: var(--amber); }
+  .bm-body { padding: 18px 28px 24px; }
+  .bm-sec { margin-bottom: 16px; }
+  .bm-slabel { font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 7px; }
+  .bm-criterion { font-size: 13.5px; color: var(--ink); line-height: 1.6; background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 13px 15px; }
+  .bm-steps {}
+  .bm-step { display: flex; gap: 11px; align-items: flex-start; padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--muted); line-height: 1.5; }
+  .bm-step:last-child { border-bottom: none; }
+  .bm-step-n { font-family: var(--font-mono); font-size: 10px; background: var(--parchment-dark); color: var(--sepia); padding: 2px 7px; border-radius: 3px; flex-shrink: 0; margin-top: 1px; }
+  .bm-evbox { background: rgba(196,129,58,0.07); border: 1px solid rgba(196,129,58,0.2); border-radius: var(--radius); padding: 11px 14px; font-size: 13px; color: var(--muted); line-height: 1.55; }
+  .bm-sim-row { display: flex; flex-wrap: wrap; gap: 7px; }
+  .bm-sim-team { font-size: 11px; background: rgba(46,93,75,0.08); color: var(--green); border: 1px solid rgba(46,93,75,0.15); padding: 4px 10px; border-radius: 20px; }
+  .bm-sim-none { font-size: 12px; color: var(--muted); font-style: italic; }
+
+  /* — Template preview modal — */
+  .tpl-box { max-width: 900px; }
+  .tpl-m-header { padding: 20px 26px; border-bottom: 1px solid var(--border); display: flex; gap: 14px; align-items: center; }
+  .tpl-m-icon { font-size: 26px; }
+  .tpl-m-ver { font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--amber); margin-bottom: 3px; }
+  .tpl-m-name { font-family: var(--font-display); font-size: 17px; font-weight: 700; color: var(--ink); font-optical-sizing: auto; }
+  .tpl-layout { display: grid; grid-template-columns: 190px 1fr; }
+  @media(max-width:600px){ .tpl-layout { grid-template-columns: 1fr; } }
+  .tpl-sidebar { background: var(--ink); padding: 18px 14px; border-radius: 0 0 0 var(--radius); }
+  .tpl-sb-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: rgba(244,234,213,0.3); margin-bottom: 10px; }
+  .tpl-sb-btn { display: block; width: 100%; text-align: left; background: none; border: none; font-family: var(--font-body); font-size: 12px; color: rgba(244,234,213,0.5); padding: 6px 9px; border-radius: 3px; cursor: pointer; margin-bottom: 2px; transition: all 0.14s; line-height: 1.4; }
+  .tpl-sb-btn:hover { background: rgba(244,234,213,0.08); color: var(--parchment); }
+  .tpl-sb-btn.tpl-active { background: rgba(244,234,213,0.13); color: var(--parchment); }
+  .tpl-content { padding: 22px 26px; overflow-y: auto; max-height: 520px; background: white; border-radius: 0 0 var(--radius) 0; }
+  .tpl-sec-title { font-family: var(--font-display); font-size: 17px; font-weight: 700; color: var(--ink); margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px solid var(--parchment-dark); font-optical-sizing: auto; }
+  .tpl-field { margin-bottom: 14px; }
+  .tpl-fl { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  .tpl-fv { font-size: 13.5px; color: var(--ink); line-height: 1.55; }
+  .tpl-fv.ex { color: var(--sepia); font-style: italic; }
+  .tpl-fv.code { font-family: var(--font-mono); font-size: 12px; color: var(--red); background: rgba(139,30,30,0.05); padding: 2px 6px; border-radius: 3px; }
+  .tpl-yaml { background: var(--parchment); border: 1px solid var(--border); border-radius: var(--radius); padding: 13px 15px; font-family: var(--font-mono); font-size: 11.5px; line-height: 1.9; margin-bottom: 16px; overflow-x: auto; }
+  .yk { color: var(--red); } .yv { color: var(--green); } .yc { color: var(--muted); }
+  .tpl-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 14px; }
+  .tpl-table th { background: var(--parchment-dark); color: var(--muted); font-family: var(--font-mono); font-size: 9px; letter-spacing: 1px; text-transform: uppercase; padding: 7px 9px; text-align: left; }
+  .tpl-table td { padding: 7px 9px; border-bottom: 1px solid var(--border); color: var(--muted); vertical-align: top; }
+  .tpl-table td.tid { font-family: var(--font-mono); color: var(--red); font-size: 11px; }
+  .tpl-cb { display: flex; gap: 8px; align-items: center; margin-bottom: 7px; font-size: 13px; color: var(--muted); }
+  .tpl-cbx { width: 14px; height: 14px; border: 1.5px solid var(--border); border-radius: 2px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 9px; }
+  .tpl-cbx.chk { background: var(--green); border-color: var(--green); color: white; }
+  .tpl-note { background: rgba(196,129,58,0.07); border-left: 3px solid var(--amber); padding: 10px 14px; border-radius: 0 var(--radius) var(--radius) 0; font-size: 12.5px; color: var(--muted); line-height: 1.55; margin-bottom: 14px; font-style: italic; }
+
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ──────────────────────────────────────────── -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="logo-block">
+      <div class="logo-eyebrow">Expediente Oficial</div>
+      <div class="logo-title">Sherlock Holmes<br><em>y la Verdad Oculta</em></div>
+      <div class="logo-sub">Sistema de Investigación Transdisciplinaria</div>
+    </div>
+    <div class="header-phrase">
+      "No basta con tener una idea brillante.<br>Hay que poder demostrarla, sostenerla éticamente<br>y dejar evidencia clara de cómo se llegó a ella."
+    </div>
+    <div class="header-badge">
+      <span class="version-chip">V1.0</span>
+    </div>
+  </div>
+</header>
+
+<!-- ── NAVIGATION ──────────────────────────────────────── -->
+<nav class="nav-tabs">
+  <div class="nav-inner">
+    <button class="tab-btn active" onclick="switchTab('home',this)">🏠 Panel</button>
+    <button class="tab-btn" onclick="switchTab('cases',this)">📂 Casos</button>
+    <button class="tab-btn" onclick="switchTab('teams',this)">👥 Equipos</button>
+    <button class="tab-btn" onclick="switchTab('badges',this)">🏅 Badges</button>
+    <button class="tab-btn" onclick="switchTab('glossary',this)">📖 Glosario</button>
+    <button class="tab-btn" onclick="switchTab('templates',this)">📋 Plantillas</button>
+  </div>
+</nav>
+
+<!-- ── MAIN ────────────────────────────────────────────── -->
+<main class="main">
+
+  <!-- HOME -->
+  <div id="panel-home" class="tab-panel active">
+    <div class="section-header">
+      <div class="section-eyebrow">Bienvenido al sistema</div>
+      <h1 class="section-title">Panel Principal</h1>
+      <p class="section-desc">Un juego académico transdisciplinario donde investigar es una forma de responsabilidad moral.</p>
+    </div>
+
+    <div class="home-grid">
+      <div class="home-hero">
+        <div class="hero-quote">
+          "Sherlock Holmes dejó preparado un sistema de retos para encontrar a la próxima generación capaz de continuar su legado. Ahora, Dr. Watson GPT 2025 espera para orientar — pero no resolver — el camino."
+        </div>
+        <div class="hero-attr">— Universo narrativo del juego · Sherlock Holmes y la Verdad Oculta V1.0</div>
+      </div>
+
+      <div class="home-card home-card-link" onclick="goTab('cases')">
+        <div class="home-card-icon icon-red">📂</div>
+        <h3>10 Casos Activos</h3>
+        <p>Desde verificación documental básica hasta análisis sistémico de crisis pública. Cada caso representa una disciplina diferente y aumenta en complejidad.</p>
+        <span class="home-card-cta">Ver casos →</span>
+      </div>
+
+      <div class="home-card home-card-link" onclick="goTab('teams')">
+        <div class="home-card-icon icon-blue">👥</div>
+        <h3>5 Equipos en Campo</h3>
+        <p>25 Junior DevOps organizados en equipos transdisciplinarios. Cada grupo tiene roles definidos, caso asignado y dashboards de progreso en tiempo real.</p>
+        <span class="home-card-cta">Ver equipos →</span>
+      </div>
+
+      <div class="home-card home-card-link" onclick="goTab('badges')">
+        <div class="home-card-icon icon-green">🏅</div>
+        <h3>35 Badges Oficiales</h3>
+        <p>El sistema de insignias reconoce competencias verificadas, no apariencias. Cada badge requiere evidencia documentada y validación humana.</p>
+        <span class="home-card-cta">Ver badges →</span>
+      </div>
+
+      <div class="home-card home-card-link" onclick="goTab('glossary')">
+        <div class="home-card-icon icon-amber">📖</div>
+        <h3>Glosario Transdisciplinario</h3>
+        <p>Un vocabulario compartido y estable para que la memoria, la evidencia y la colaboración no se fragmenten entre disciplinas, herramientas o cohortes.</p>
+        <span class="home-card-cta">Ver glosario →</span>
+      </div>
+
+      <div class="home-card home-card-link" onclick="goTab('templates')">
+        <div class="home-card-icon icon-sepia">📋</div>
+        <h3>Plantillas Oficiales</h3>
+        <p>Expediente, Evidencia y Bitácora en Markdown normalizado V1.1. El formato oficial es la fuente principal de verdad documental del proyecto.</p>
+        <span class="home-card-cta">Ver plantillas →</span>
+      </div>
+    </div>
+
+    <div style="margin-top:48px">
+      <div class="section-eyebrow">Brújula del sistema</div>
+      <h2 class="section-title" style="font-size:24px;margin-bottom:8px;">Los 10 Pilares</h2>
+      <p class="section-desc">La base cultural y ética del juego. Son anteriores a cualquier regla técnica.</p>
+      <div class="pillar-list">
+        <div class="pillar-item"><span class="pillar-num">01</span><div class="pillar-text"><strong>Propósito humano antes que automatización</strong><p>La tecnología no es el fin. El fin es desarrollar personas capaces de crear con sentido.</p></div></div>
+        <div class="pillar-item"><span class="pillar-num">02</span><div class="pillar-text"><strong>Ética antes que velocidad</strong><p>Ganar sin ética equivale a perder. Cada decisión debe respetar honestidad, justicia y responsabilidad.</p></div></div>
+        <div class="pillar-item"><span class="pillar-num">03</span><div class="pillar-text"><strong>Evidencia antes que opinión</strong><p>Toda afirmación importante debe sostenerse con evidencia verificable. Investigar no es adivinar.</p></div></div>
+        <div class="pillar-item"><span class="pillar-num">04</span><div class="pillar-text"><strong>Cadena de custodia antes que improvisación</strong><p>Cada evidencia debe poder rastrearse: origen, fecha, contexto, responsable, uso y transformación.</p></div></div>
+        <div class="pillar-item"><span class="pillar-num">05</span><div class="pillar-text"><strong>Documentación antes que olvido</strong><p>Lo que no se documenta bien se vuelve frágil, ambiguo o inútil. La documentación es el corazón del juego.</p></div></div>
+        <div class="pillar-item"><span class="pillar-num">06</span><div class="pillar-text"><strong>Colaboración antes que ego</strong><p>Ningún miembro resuelve el caso solo. El equipo progresa cuando distribuye funciones con claridad.</p></div></div>
+        <div class="pillar-item"><span class="pillar-num">07</span><div class="pillar-text"><strong>Aprendizaje en flujo</strong><p>Los desafíos deben ser exigentes, pero alcanzables. El reto y la capacidad deben estar en equilibrio.</p></div></div>
+        <div class="pillar-item"><span class="pillar-num">08</span><div class="pillar-text"><strong>IA como asistente, no como reemplazo</strong><p>Dr. Watson GPT 2025 puede orientar, pero no sustituye el juicio humano ni la responsabilidad del equipo.</p></div></div>
+        <div class="pillar-item"><span class="pillar-num">09</span><div class="pillar-text"><strong>Accesibilidad, justicia y respeto</strong><p>El sistema debe ser claro y respetuoso con distintos perfiles, estilos de trabajo y contextos.</p></div></div>
+        <div class="pillar-item"><span class="pillar-num">10</span><div class="pillar-text"><strong>Legado y comunidad</strong><p>Cada cohorte produce conocimiento reutilizable y ejemplos de buenas prácticas para quienes vengan después.</p></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASES -->
+  <div id="panel-cases" class="tab-panel">
+    <div class="section-header">
+      <div class="section-eyebrow">Expedientes del sistema</div>
+      <h2 class="section-title">Los 10 Casos</h2>
+      <p class="section-desc">Ordenados por complejidad ascendente. Cada caso representa una disciplina distinta. El Caso 1 está activo para piloto.</p>
+    </div>
+    <div class="cases-grid" id="casesGrid"></div>
+  </div>
+
+  <!-- BADGES -->
+  <div id="panel-badges" class="tab-panel">
+    <div class="section-header">
+      <div class="section-eyebrow">Sistema de insignias</div>
+      <h2 class="section-title">Repositorio de Badges</h2>
+      <p class="section-desc">35 insignias oficiales organizadas en 10 familias. Un badge sin evidencia es solo decoración.</p>
+    </div>
+    <div class="badges-filter" id="badgesFilter"></div>
+    <div class="badges-grid" id="badgesGrid"></div>
+  </div>
+
+  <!-- GLOSSARY -->
+  <div id="panel-glossary" class="tab-panel">
+    <div class="section-header">
+      <div class="section-eyebrow">Vocabulario oficial</div>
+      <h2 class="section-title">Glosario Transdisciplinario</h2>
+      <p class="section-desc">Fuente terminológica oficial del proyecto. Un sistema complejo necesita un lenguaje compartido.</p>
+    </div>
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" class="search-input" id="glossarySearch" placeholder="Buscar término…" oninput="filterGlossary()">
+    </div>
+    <div class="glossary-count" id="glossaryCount"></div>
+    <div class="glossary-list" id="glossaryList"></div>
+  </div>
+
+  <!-- TEMPLATES -->
+  <div id="panel-templates" class="tab-panel">
+    <div class="section-header">
+      <div class="section-eyebrow">Plantillas oficiales</div>
+      <h2 class="section-title">Plantillas del Sistema</h2>
+      <p class="section-desc">Documentos Markdown normalizados V1.1. Cada plantilla cumple una función documental específica dentro del expediente de caso.</p>
+    </div>
+    <div class="templates-list" id="templatesList"></div>
+  </div>
+
+  <!-- TEAMS -->
+  <div id="panel-teams" class="tab-panel">
+
+    <!-- OVERVIEW -->
+    <div id="teams-overview-view">
+      <div class="section-header">
+        <div class="section-eyebrow">Gestión de equipos</div>
+        <h2 class="section-title">Equipos en Campo</h2>
+        <p class="section-desc">5 equipos Junior DevOps · 25 investigadores · 5 facultades · Piloto V1.0 activo</p>
+      </div>
+      <div class="teams-global-stats">
+        <div class="tg-stat"><div class="tg-stat-n" style="color:var(--red)">5</div><div class="tg-stat-l">Equipos activos</div></div>
+        <div class="tg-stat"><div class="tg-stat-n">25</div><div class="tg-stat-l">Junior DevOps</div></div>
+        <div class="tg-stat"><div class="tg-stat-n" style="color:var(--green)">47</div><div class="tg-stat-l">Badges otorgados</div></div>
+        <div class="tg-stat"><div class="tg-stat-n" style="color:var(--amber)">138</div><div class="tg-stat-l">Evidencias capturadas</div></div>
+      </div>
+      <div class="teams-grid" id="teamsGrid"></div>
+    </div>
+
+    <!-- DETAIL -->
+    <div id="teams-detail-view" style="display:none">
+      <div class="teams-back" onclick="backToTeams()">← Todos los equipos</div>
+      <div id="teamDetailContent"></div>
+    </div>
+
+  </div>
+
+</main>
+
+<script>
+// ── TAB SWITCHING ──────────────────────────────
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ═══════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════
+
+const CASES = [
+  {
+    level: 1, status: 'active', title: 'El Manuscrito Extraviado', discipline: 'Humanidades / Historia', complexity: 1,
+    premise: 'Aparece en circulación un supuesto manuscrito atribuido a una figura histórica puertorriqueña. El documento contiene una frase muy conveniente para una discusión actual, pero su autenticidad es dudosa y su origen es imposible de confirmar a simple vista.',
+    question: '¿Es auténtico el manuscrito, una mala atribución o una falsificación reciente?',
+    badges: ['Ojo de Baker Street', 'Cazador de Fuentes', 'Escriba del Caso'],
+    badgeIds: ['BADGE-001','BADGE-004','BADGE-008'],
+    products: ['Ficha de evidencia completa con ID único','Tabla comparativa de versiones del manuscrito','Mini informe argumentado con conclusión verificable'],
+    competencies: ['Lectura atenta y observación detallada','Comparación de versiones documentales','Distinción entre fuente primaria y secundaria','Documentación básica de evidencia','Prudencia ante afirmaciones convenientes'],
+    evidenceTypes: ['Imagen escaneada','Transcripción paleográfica','Nota de archivo','Referencia bibliográfica','Comentario de procedencia'],
+    difficulty: 'Los equipos deben aprender que una frase "convincente" no equivale a verdad documental. El reto principal es resistir la tentación de concluir rápido y en su lugar observar con cuidado.',
+    simulation: {
+      team: 'Equipo Clio', teamCode: 'EQ-HUM-01', progress: 78,
+      phase: 'Fase 3 — Contraste y análisis documental',
+      hypothesis: [
+        { id:'H1', text:'Falsificación del siglo XX con tinta envejecida artificialmente', status:'strong' },
+        { id:'H2', text:'Mala atribución a figura histórica equivocada de la misma época', status:'open' },
+        { id:'H3', text:'Manuscrito auténtico descontextualizado intencionalmente', status:'weak' },
+      ],
+      evidences: [
+        { id:'E-001', type:'Imagen', desc:'Escaneo de alta resolución — Archivo General de PR', status:'ok' },
+        { id:'E-002', type:'Texto', desc:'Transcripción paleográfica de 1987', status:'ok' },
+        { id:'E-003', type:'Análisis', desc:'Reporte espectral de tintas — Lab. UPR', status:'an' },
+      ],
+      badgesEarned: ['Escriba del Caso','Custodio de Evidencias','Watson Bien Consultado','Ojo de Baker Street'],
+      badgesInProgress: ['Cazador de Fuentes','Doble Verificación','Triangulador de la Verdad'],
+      lastEntry: 'SES-004: La tinta muestra anomalías espectrales incompatibles con la época atribuida. Papel con marcas de agua posteriores al período. Hipótesis H1 gana fuerza considerable.',
+      nextStep: 'Confirmar con experto externo del Archivo General de Puerto Rico — SES-005 programada.'
+    }
+  },
+  {
+    level: 2, status: 'locked', title: 'La Portada Viral', discipline: 'Comunicación / Periodismo', complexity: 2,
+    premise: 'Circula en redes una portada de noticia atribuida a un medio reconocido. El titular causa indignación inmediata en el campus, pero hay señales de edición o descontextualización que el equipo debe rastrear.',
+    question: '¿La portada es real, manipulada, sacada de contexto o completamente inventada?',
+    badges: ['Cazador de Fuentes', 'Triangulador de la Verdad', 'Voz del Detective'],
+    badgeIds: ['BADGE-004','BADGE-005','BADGE-019'],
+    products: ['Tablero de evidencias con cronología de circulación','Análisis de señales de manipulación visual y textual','Conclusión verificable con fuente original localizada'],
+    competencies: ['Fact-checking multimodal','Análisis de titulares y contexto editorial','Búsqueda de fuente original en archivo web','Rastreo básico de circulación digital','Lectura crítica de metadatos y EXIF'],
+    evidenceTypes: ['Captura de pantalla con metadatos','Enlace del medio original','Archivo Wayback Machine','Reacciones de usuarios','Metadatos EXIF del archivo'],
+    difficulty: 'La noticia parece plausible y emocionalmente efectiva. El equipo debe resistir la presión social del campus y rastrear el origen con evidencia verificable antes de concluir.',
+    simulation: null
+  },
+  {
+    level: 3, status: 'locked', title: 'El Jardín de las Especies Imposibles', discipline: 'Ciencias Naturales / Biología', complexity: 3,
+    premise: 'Una publicación afirma que en un jardín experimental del campus apareció una especie supuestamente extinta o nunca registrada en Puerto Rico. La noticia activa curiosidad, rumores y visitas no autorizadas.',
+    question: '¿Se trata de una especie extraordinaria, una confusión taxonómica, una alteración visual o una interpretación prematura?',
+    badges: ['Lupa de la Deducción', 'Triangulador de la Verdad', 'Refutador Elegante'],
+    badgeIds: ['BADGE-002','BADGE-005','BADGE-006'],
+    products: ['Expediente de identificación preliminar con protocolo de 4 pasos','Matriz de hipótesis taxonómicas con comparativa visual','Recomendación de verificación con botánico externo'],
+    competencies: ['Clasificación taxonómica básica','Observación comparada de morfología','Uso de fuentes científicas: GBIF, iNaturalist','Contraste entre evidencia visual y descripción técnica','Prudencia frente a afirmaciones extraordinarias'],
+    evidenceTypes: ['Fotografías de alta resolución con GPS','Ficha biológica de especie candidata','Registro de observación de campo','Consulta a base de datos GBIF','Comentario de experto botánico'],
+    difficulty: 'La imagen parece contundente, pero la identificación científica requiere precisión taxonómica. El equipo debe distinguir entre lo que "parece" y lo que "puede demostrarse" con criterio científico.',
+    simulation: null
+  },
+  {
+    level: 4, status: 'locked', title: 'El Experimento de la Conducta Invisible', discipline: 'Ciencias Sociales / Psicología', complexity: 4,
+    premise: 'Un estudio informal asegura demostrar un cambio preocupante en la conducta estudiantil a partir de una muestra pequeña y mal descrita. El informe comienza a usarse para justificar decisiones institucionales.',
+    question: '¿El estudio sostiene realmente lo que afirma o incurre en errores metodológicos, sesgos y sobreinterpretación?',
+    badges: ['Refutador Elegante', 'Custodio de Evidencias', 'Auditor de Sombras'],
+    badgeIds: ['BADGE-006','BADGE-009','BADGE-027'],
+    products: ['Evaluación crítica del diseño metodológico','Lista priorizada de fallas metodológicas y sesgos','Recomendación ética fundamentada'],
+    competencies: ['Lectura crítica de metodología de investigación','Comprensión de muestra, sesgo y validez interna','Distinción entre dato observable y conclusión','Ética de la investigación con seres humanos','Argumentación metodológica con evidencia'],
+    evidenceTypes: ['Cuestionario original del estudio','Tabla de resultados y distribución','Resumen ejecutivo institucional','Notas metodológicas incompletas','Comentarios críticos de revisores'],
+    difficulty: 'El caso no gira en torno a si el dato existe, sino a si fue interpretado correctamente. El equipo debe desmontar inferencias que parecen razonables a primera vista sin atacar a las personas que realizaron el estudio.',
+    simulation: null
+  },
+  {
+    level: 5, status: 'locked', title: 'Los Números del Decanato Fantasma', discipline: 'Administración / Contabilidad', complexity: 5,
+    premise: 'Circulan datos financieros contradictorios relacionados con un departamento universitario. Nadie puede explicar la discrepancia entre el informe oficial y las cifras que aparecen en conversaciones internas y documentos parciales.',
+    question: '¿Los números son erróneos, manipulados, mal interpretados o simplemente están fuera de contexto?',
+    badges: ['Archivo Vivo', 'Relevo Inteligente', 'Guardián de la Verdad Oculta'],
+    badgeIds: ['BADGE-010','BADGE-017','BADGE-007'],
+    products: ['Análisis comparativo de cifras con alineación de períodos','Línea de tiempo financiera con fuente de cada dato','Informe de hallazgos con recomendación de corrección'],
+    competencies: ['Lectura de estados financieros simples','Detección de inconsistencias numéricas','Trazabilidad de cifras entre documentos','Alineación de períodos contables','Documentación de discrepancias con evidencia'],
+    evidenceTypes: ['Informe financiero oficial','Fragmentos de correos internos','Tabla comparativa elaborada por el equipo','Presupuesto del período anterior','Actas de reunión del decanato'],
+    difficulty: 'Las cifras no son falsas necesariamente: están descontextualizadas o mal comparadas. El equipo debe comprender que los números solo significan algo dentro de su marco temporal y clasificatorio correcto.',
+    simulation: null
+  },
+  {
+    level: 6, status: 'locked', title: 'La Rúbrica que Pensaba Sola', discipline: 'Educación / Pedagogía', complexity: 6,
+    premise: 'Una facultad prueba un sistema de apoyo con IA para redactar comentarios de evaluación. Pronto aparecen diferencias extrañas entre la calidad real de algunos trabajos y la retroalimentación emitida.',
+    question: '¿La herramienta está ayudando, sesgando, simplificando en exceso o siendo usada sin suficiente supervisión pedagógica?',
+    badges: ['Watson Bien Consultado', 'Doble Verificación', 'IA con Dignidad Humana'],
+    badgeIds: ['BADGE-012','BADGE-013','BADGE-014'],
+    products: ['Auditoría breve del sistema de IA con hallazgos documentados','Propuesta de protocolo de uso ético con criterios humanos','Ejemplo concreto de mejora con supervisión pedagógica'],
+    competencies: ['Evaluación educativa y criterios de retroalimentación','Análisis de sesgo en sistemas automatizados','Transparencia de uso de IA en contexto académico','Diseño de criterio humano para supervición de IA','Comparación entre salidas automatizadas y juicio docente'],
+    evidenceTypes: ['Rúbricas originales del curso','Comentarios generados por la IA','Trabajos estudiantiles evaluados','Prompts utilizados con la IA','Revisión comparada por docente humano'],
+    difficulty: 'El caso combina pedagogía, criterio evaluativo y límites de automatización. El equipo debe evitar demonizar la herramienta y en su lugar proponer cómo mejorar su uso con criterio humano claro.',
+    simulation: null
+  },
+  {
+    level: 7, status: 'locked', title: 'El Plano del Edificio que No Coincidía', discipline: 'Arquitectura / Planificación', complexity: 7,
+    premise: 'Durante una simulación de ruta segura en un edificio antiguo del campus, los equipos descubren que el plano oficial, la señalización física y una versión digital reciente no coinciden plenamente.',
+    question: '¿Cuál versión del espacio es más confiable y qué riesgos produce la discrepancia?',
+    badges: ['Cartógrafo de Patrones', 'Tablero Elocuente', 'Auditor de Sombras'],
+    badgeIds: ['BADGE-003','BADGE-020','BADGE-027'],
+    products: ['Mapa de discrepancias entre las tres versiones del espacio','Priorización de riesgos por área del edificio','Recomendación correctiva documentada con evidencia visual'],
+    competencies: ['Lectura e interpretación de planos arquitectónicos','Comparación de versiones espaciales','Observación in situ o simulada de rutas','Análisis de riesgo con criterio técnico','Documentación visual precisa de discrepancias'],
+    evidenceTypes: ['Plano oficial escaneado','Fotografías del espacio físico','Mapa digital reciente','Anotaciones de recorrido simulado','Reporte técnico de mantenimiento previo'],
+    difficulty: 'Hay que pensar simultáneamente en seguridad, interpretación gráfica y evidencia contradictoria. La dificultad radica en que todas las versiones pueden ser parcialmente correctas.',
+    simulation: null
+  },
+  {
+    level: 8, status: 'locked', title: 'El Laboratorio de los Ecos Digitales', discipline: 'Ingeniería / Computación', complexity: 8,
+    premise: 'Un laboratorio reporta comportamientos extraños en estaciones de trabajo usadas durante una competencia previa. No hay evidencia clara de sabotaje, pero sí huellas contradictorias en logs, archivos temporales y configuraciones.',
+    question: '¿Hubo error de configuración, uso indebido, contaminación del entorno o intervención maliciosa menor?',
+    badges: ['Herrero del Monolito', 'Cazador de Bugs', 'Integrador de Piezas'],
+    badgeIds: ['BADGE-022','BADGE-026','BADGE-023'],
+    products: ['Cronología técnica de eventos con evidencia de logs','Hipótesis de causa principal con árbol de decisión','Recomendación de endurecimiento o prevención del sistema'],
+    competencies: ['Lectura e interpretación de logs del sistema','Razonamiento técnico sobre causas de fallo','Control de versiones y trazabilidad de archivos','Pruebas sistemáticas de hipótesis técnicas','Documentación rigurosa del entorno de trabajo'],
+    evidenceTypes: ['Logs del sistema operativo','Capturas del sistema y configuración','Estructura de carpetas y archivos temporales','Historial de cambios de archivos','Resultados de pruebas de diagnóstico'],
+    difficulty: 'La evidencia es técnica, fragmentada y requiere orden mental fuerte. El equipo debe resistir la tentación de concluir "sabotaje" sin evidencia suficiente y en su lugar documentar sistemáticamente.',
+    simulation: null
+  },
+  {
+    level: 9, status: 'locked', title: 'El Reglamento de las Dos Verdades', discipline: 'Derecho / Ciencias Políticas', complexity: 9,
+    premise: 'Dos documentos normativos relacionados con la misma situación universitaria parecen ofrecer respuestas distintas. Cada sector del campus cita "su" versión como si fuera definitiva.',
+    question: '¿Cuál interpretación es jurídicamente más sólida y comunicativamente más responsable en ese contexto?',
+    badges: ['Guardián de la Verdad Oculta', 'Debate con Honor', 'Cierre sin Cabos Sueltos'],
+    badgeIds: ['BADGE-007','BADGE-018','BADGE-028'],
+    products: ['Matriz comparativa normativa con jerarquía documental','Recomendación argumentada sobre la interpretación más sólida','Nota pública responsable para comunicación institucional'],
+    competencies: ['Lectura normativa y comprensión de jerarquía legal','Interpretación contextual de documentos jurídicos','Comprensión de vigencia, autoridad y alcance normativo','Argumentación pública con evidencia documental','Prudencia institucional en comunicación de conflictos'],
+    evidenceTypes: ['Reglamentos universitarios vigentes','Memorandos institucionales','Declaraciones públicas de actores','Línea de tiempo normativa del proceso','Versiones archivadas de documentos previos'],
+    difficulty: 'No basta con localizar un texto; hay que comprender su autoridad, vigencia y contexto. El equipo debe argumentar con precisión sin pronunciarse más allá de lo que la evidencia permite.',
+    simulation: null
+  },
+  {
+    level: 10, status: 'epic', title: 'La Verdad Oculta de la Ciudad Universitaria', discipline: 'Salud Pública / Medicina Comunitaria', complexity: 10,
+    premise: 'Surge una alarma comunitaria relacionada con una supuesta amenaza a la salud en el entorno universitario. Circulan mapas, mensajes de voz, capturas, testimonios, datos parciales y reacciones institucionales — algunas piezas legítimas, otras fabricadas.',
+    question: '¿Cómo construir una conclusión responsable y una respuesta pública ética cuando la evidencia es multimodal, incompleta y socialmente sensible?',
+    badges: ['Watson sin Glitches Graves', 'Cadena de Oro', 'Equipo Holmes V1', 'Legado para la Próxima Cohorte'],
+    badgeIds: ['BADGE-015','BADGE-011','BADGE-034','BADGE-035'],
+    products: ['Expediente completo de alta complejidad con todas las secciones','Panel de situación con síntesis multimodal de evidencias','Recomendación pública responsable con criterio ético','Prototipo o tablero funcional de apoyo a decisión'],
+    competencies: ['Análisis sistémico de crisis con múltiples capas','Priorización de riesgo bajo incertidumbre','Verificación multimodal: texto, imagen, audio, datos','Comunicación pública responsable en emergencias','Coordinación intensiva del equipo bajo presión','Síntesis transdisciplinaria y documentación épica'],
+    evidenceTypes: ['Testimonios documentados','Mensajes de voz y reenvíos en cadena','Mapa de incidencia geoespacial','Comunicado oficial institucional','Datos de laboratorio o simulación','Tablero central integrado de evidencias'],
+    difficulty: 'Es el primer caso donde resolver "rápido" puede causar daño social real. El equipo debe demostrar madurez ética auténtica: ni minimizar el riesgo irresponsablemente ni amplificar el pánico sin evidencia sólida.',
+    simulation: null
+  }
+];
+
+const BADGES = [
+  { id:'BADGE-001', fam:1, icon:'👁️', name:'Ojo de Baker Street',             level:'I',      type:'Individual', criterion:'Identifica detalles relevantes que otros omitieron y los documenta con claridad. Registra al menos 3 observaciones significativas conectadas al caso.' },
+  { id:'BADGE-002', fam:1, icon:'🔍', name:'Lupa de la Deducción',             level:'II',     type:'Individual', criterion:'Formula inferencias válidas a partir de evidencias observables. Distingue dato, inferencia y juicio; sustenta deducción con al menos 2 evidencias.' },
+  { id:'BADGE-003', fam:1, icon:'🗺️', name:'Cartógrafo de Patrones',           level:'III',    type:'Individual/Grupal', criterion:'Detecta patrones en varias noticias, casos o conjuntos de evidencias. Compara al menos 3 casos y presenta una síntesis clara.' },
+  { id:'BADGE-004', fam:2, icon:'🎯', name:'Cazador de Fuentes',               level:'I',      type:'Individual', criterion:'Localiza fuentes relevantes, variadas y pertinentes. Reúne al menos 3 fuentes registrando fecha, origen y función de cada una.' },
+  { id:'BADGE-005', fam:2, icon:'⚖️', name:'Triangulador de la Verdad',        level:'II',     type:'Individual/Grupal', criterion:'Valida una afirmación mediante triangulación de fuentes o métodos. Usa al menos 3 fuentes distintas y explica por qué la conclusión es razonable.' },
+  { id:'BADGE-006', fam:2, icon:'🗡️', name:'Refutador Elegante',               level:'III',    type:'Individual', criterion:'Refuta una afirmación falsa o débil con rigor, respeto y evidencia. Desmonta un error sin atacar personas, manteniendo claridad argumentativa.' },
+  { id:'BADGE-007', fam:2, icon:'🔐', name:'Guardián de la Verdad Oculta',     level:'IV',     type:'Individual', criterion:'Sostiene una investigación compleja con evidencia fuerte y conclusión robusta. Resuelve un caso de alta dificultad con coherencia documental íntegra.' },
+  { id:'BADGE-008', fam:3, icon:'✍️', name:'Escriba del Caso',                 level:'I',      type:'Individual/Grupal', criterion:'La documentación básica del caso está clara, completa y ordenada. Expediente legible con secciones esenciales completas y control de versiones básico.' },
+  { id:'BADGE-009', fam:3, icon:'🔒', name:'Custodio de Evidencias',           level:'II',     type:'Individual', criterion:'Una evidencia clave mantiene trazabilidad completa desde su captura hasta su uso. ID único, origen, responsable, transformaciones y uso final rastreable.' },
+  { id:'BADGE-010', fam:3, icon:'📚', name:'Archivo Vivo',                     level:'III',    type:'Grupal', criterion:'El equipo mantiene documentación sincronizada, legible y reutilizable. Coherencia entre expediente, bitácoras y repositorio; nomenclatura consistente.' },
+  { id:'BADGE-011', fam:3, icon:'⛓️', name:'Cadena de Oro',                    level:'IV',     type:'Grupal', criterion:'Cadena de custodia ejemplar sin rupturas relevantes y con trazabilidad auditada. Integridad documental sobresaliente con validación humana positiva.' },
+  { id:'BADGE-012', fam:4, icon:'🤖', name:'Watson Bien Consultado',           level:'I',      type:'Individual', criterion:'Usa Dr. Watson GPT 2025 como apoyo explícito y documentado. Registra el uso de IA, describe su propósito y verifica la salida antes de adoptarla.' },
+  { id:'BADGE-013', fam:4, icon:'🔄', name:'Doble Verificación',               level:'II',     type:'Individual', criterion:'Detecta, cuestiona y corrige una salida dudosa de IA. Identifica posible error o sesgo, contrasta con fuentes externas y documenta la corrección.' },
+  { id:'BADGE-014', fam:4, icon:'🤝', name:'IA con Dignidad Humana',           level:'III',    type:'Individual/Grupal', criterion:'El uso de IA demuestra sensibilidad ética, prudencia y respeto por la dignidad humana. No usa IA para engañar ni fabricar evidencia; mantiene autoría humana visible.' },
+  { id:'BADGE-015', fam:4, icon:'🧠', name:'Watson sin Glitches Graves',       level:'IV',     type:'Grupal', criterion:'El equipo integra IA de forma eficaz, crítica, transparente y estratégicamente limitada. La IA mejora el proceso sin dominarlo; todas las intervenciones están registradas.' },
+  { id:'BADGE-016', fam:5, icon:'🔗', name:'Sincronía de Laboratorio',         level:'I',      type:'Grupal', criterion:'El equipo distribuye funciones con claridad y trabaja sin caos operativo evidente. Roles visibles, coordinación básica y avances consistentes.' },
+  { id:'BADGE-017', fam:5, icon:'🏃', name:'Relevo Inteligente',               level:'II',     type:'Grupal', criterion:'El equipo logra continuidad sin depender de una sola persona. Tareas delegadas, conocimiento compartido y documentación suficiente para el relevo.' },
+  { id:'BADGE-018', fam:5, icon:'🤜', name:'Debate con Honor',                 level:'III',    type:'Grupal', criterion:'El equipo sostiene desacuerdos productivos con respeto, evidencia y escucha activa. Debate sin descalificación, argumentos con pruebas, síntesis posterior.' },
+  { id:'BADGE-019', fam:6, icon:'🎙️', name:'Voz del Detective',               level:'I',      type:'Individual', criterion:'Explica hallazgos con claridad, orden y lenguaje adecuado. Comunicación comprensible con ideas ordenadas en relación directa con evidencias.' },
+  { id:'BADGE-020', fam:6, icon:'📊', name:'Tablero Elocuente',                level:'II',     type:'Grupal', criterion:'El equipo organiza evidencias de manera visual y comprensible. Tablero útil, no decorativo; legibilidad y relaciones entre evidencias claramente visibles.' },
+  { id:'BADGE-021', fam:6, icon:'📖', name:'Narrador de la Verdad',            level:'III',    type:'Grupal', criterion:'Comunica la investigación como narrativa coherente, rigurosa y atractiva. Hilo conductor claro, fidelidad a la evidencia y valor pedagógico o comunitario.' },
+  { id:'BADGE-022', fam:7, icon:'⚒️', name:'Herrero del Monolito',             level:'I',      type:'Grupal', criterion:'Construye un MVP funcional mínimo en HTML monolítico o equivalente aprobado. Prototipo navegable con funcionalidad básica coherente con el caso.' },
+  { id:'BADGE-023', fam:7, icon:'🧩', name:'Integrador de Piezas',             level:'II',     type:'Grupal', criterion:'Integra interfaz, lógica, evidencias y documentación sin fracturas críticas. Componentes conectados con consistencia funcional y documentación técnica suficiente.' },
+  { id:'BADGE-024', fam:7, icon:'💡', name:'MVP con Pulso',                    level:'III',    type:'Grupal', criterion:'El MVP no solo funciona, sino que aporta sentido al juego y al proceso investigativo. Utilidad real, diseño comprensible y relación directa con evidencias.' },
+  { id:'BADGE-025', fam:7, icon:'🏗️', name:'Arquitecto del Misterio',          level:'IV',     type:'Grupal', criterion:'Produce una solución técnicamente sólida, elegante y alineada al universo del juego. Robustez funcional, consistencia estética y documentación suficiente.' },
+  { id:'BADGE-026', fam:8, icon:'🐛', name:'Cazador de Bugs',                  level:'I',      type:'Individual', criterion:'Identifica fallos relevantes antes de la entrega final. Bug descrito claramente con impacto estimado y evidencia de revisión.' },
+  { id:'BADGE-027', fam:8, icon:'🕵️', name:'Auditor de Sombras',              level:'II',     type:'Individual/Grupal', criterion:'Revisa calidad documental, ética o técnica con mirada crítica. Auditoría explícita con hallazgos claros y sugerencias accionables.' },
+  { id:'BADGE-028', fam:8, icon:'✅', name:'Cierre sin Cabos Sueltos',         level:'III',    type:'Grupal', criterion:'La entrega final presenta alta consistencia, pocos vacíos y buena preparación para evaluación. Checklist de cierre completo y baja tasa de errores críticos.' },
+  { id:'BADGE-029', fam:9, icon:'🧿', name:'Guardián de Memorias',             level:'I',      type:'Q5', criterion:'El Quinto Elemento mantiene memoria viva de una sesión o caso. Bitácora completa con decisiones registradas y evidencias enlazadas.' },
+  { id:'BADGE-030', fam:9, icon:'📝', name:'Notario del Root',                 level:'II',     type:'Q5', criterion:'El Quinto Elemento mantiene estructura, rutas, nombres y versiones con disciplina. Orden root consistente, changelog actualizado y nomenclatura estable.' },
+  { id:'BADGE-031', fam:9, icon:'✨', name:'Custodio del Multiplicador',       level:'III',    type:'Q5', criterion:'La documentación y conducta del equipo habilitan bonificación por buenas prácticas. Integridad documental sostenida, ética visible y ausencia de faltas serias.' },
+  { id:'BADGE-032', fam:9, icon:'👑', name:'Quinto Elemento Legendario',       level:'IV',     type:'Q5', criterion:'El Quinto Elemento se convierte en factor decisivo del éxito del equipo mediante memoria, criterio y custodia impecables.' },
+  { id:'BADGE-033', fam:10, icon:'🌟', name:'Maestro Detective de la Verdad', level:'Épico',  type:'Individual', criterion:'Demuestra excelencia investigativa, ética y argumentativa a lo largo del juego. Múltiples badges previos, evidencia sostenida e impacto claro en la resolución de casos.' },
+  { id:'BADGE-034', fam:10, icon:'🔱', name:'Equipo Holmes V1',                level:'Épico',  type:'Grupal', criterion:'El equipo opera con coherencia, rigor y alto nivel de logro integral. Buen conteo de badges, MVP funcional, documentación robusta y comportamiento ético sostenido.' },
+  { id:'BADGE-035', fam:10, icon:'🏛️', name:'Legado para la Próxima Cohorte', level:'Épico',  type:'Grupal', criterion:'El equipo deja materiales reutilizables, claros y valiosos para futuras generaciones. Documentación reusable, valor pedagógico y claridad institucional.' }
+];
+
+const FAM_LABELS = {
+  1:'Observación',2:'Investigación',3:'Documentación',4:'IA Ética',
+  5:'Equipo',6:'Comunicación',7:'Desarrollo',8:'Testing',9:'Quinto Elemento',10:'Épicos'
+};
+
+const GLOSSARY = [
+  { term:'Accesibilidad', cat:'Diseño / Ética', brief:'Condición por la cual un recurso puede ser comprendido y utilizado por personas con distintas capacidades y contextos.', operative:'En el proyecto, la accesibilidad debe considerarse desde el diseño de documentos, interfaces, navegación, lenguaje y formatos exportables.', example:'El MVP debe revisarse por accesibilidad antes del piloto.' },
+  { term:'Ambiente Virtual de Aprendizaje Transdisciplinario', cat:'Pedagogía', brief:'Ecosistema digital donde convergen contenidos, actividades, casos, badges, evaluación y reflexión desde múltiples disciplinas.', operative:'Es el espacio organizado donde el juego, la investigación, la documentación y la colaboración se articulan como experiencia formativa.', example:'Cada caso debe poder integrarse al ambiente virtual de aprendizaje transdisciplinario.' },
+  { term:'Arquitectura de Carpetas Root', cat:'Ingeniería', brief:'Estructura maestra de directorios del proyecto.', operative:'Define dónde viven archivos, casos, evidencias, prototipos, pruebas, glosarios, badges y documentación.', example:'La arquitectura de carpetas root debe mantenerse estable entre versiones.' },
+  { term:'Asistente Virtual de IA', cat:'IA / Interacción', brief:'Sistema conversacional que apoya tareas cognitivas, técnicas o documentales.', operative:'Los asistentes de IA ayudan a idear, estructurar, verificar o redactar, sin reemplazar juicio humano ni autoría responsable.', example:'Todo uso relevante de un asistente virtual de IA debe documentarse.' },
+  { term:'Auditoría', cat:'Calidad / Evaluación', brief:'Revisión sistemática de integridad, calidad, coherencia o cumplimiento.', operative:'Puede ser técnica, ética, documental o metodológica y debe producir hallazgos accionables.', example:'El equipo completó una auditoría documental antes de entregar.' },
+  { term:'Badge', cat:'Gamificación / Evaluación', brief:'Insignia otorgada por un logro verificable dentro del sistema.', operative:'Los badges reconocen competencias, buenas prácticas y evidencia de desempeño individual o grupal.', example:'Ese badge no puede otorgarse sin evidencia suficiente.' },
+  { term:'Base de Datos', cat:'Tecnología', brief:'Sistema estructurado para almacenar, consultar y relacionar datos.', operative:'En este proyecto, una base de datos se usa cuando la persistencia y consulta superan lo razonable para archivos planos.', example:'Para la versión avanzada, el tablero puede conectarse a una base de datos.' },
+  { term:'Bitácora de Sesión', cat:'Documentación', brief:'Registro estructurado de una sesión de trabajo.', operative:'Conserva objetivos, participantes, avances, decisiones, uso de IA, problemas y próximos pasos.', example:'La bitácora de sesión debe cerrarse al terminar cada bloque formal.' },
+  { term:'Cadena de Custodia', cat:'Evidencia / Integridad', brief:'Registro del ciclo de vida de una evidencia desde su captura hasta su uso final.', operative:'Incluye origen, responsables, transformaciones, transferencias, validaciones e incidentes.', example:'La cadena de custodia quedó rota porque la edición del archivo no fue documentada.' },
+  { term:'Caso', cat:'Juego / Investigación', brief:'Unidad narrativa e investigativa del sistema.', operative:'Un caso plantea un problema, una pregunta rectora, evidencias, hipótesis, decisiones y productos esperados.', example:'El caso 4 exige análisis metodológico y ético.' },
+  { term:'Ciberseguridad', cat:'Seguridad / Tecnología', brief:'Conjunto de prácticas para proteger sistemas, datos, accesos y archivos.', operative:'En el proyecto implica proteger identidades, evidencias, credenciales, repositorios y flujos de trabajo.', example:'No deben subirse secretos ni credenciales al repositorio.' },
+  { term:'Changelog', cat:'Documentación / Versionado', brief:'Registro cronológico de cambios significativos en un archivo, sistema o prototipo.', operative:'Debe facilitar la reconstrucción del proceso de mejora y corrección entre versiones.', example:'El changelog del MVP explica por qué se modificó la navegación.' },
+  { term:'Computación Humanista', cat:'Filosofía / Tecnología', brief:'Enfoque que entiende la computación como práctica técnica, ética, cultural y humana.', operative:'En este proyecto significa programar, documentar y usar IA sin separar eficiencia de dignidad, memoria, justicia y contexto.', example:'La computación humanista exige preguntar por el impacto social del sistema.' },
+  { term:'Control de Versiones', cat:'Ingeniería / Gestión', brief:'Sistema de seguimiento de cambios en archivos y proyectos.', operative:'Permite rastrear quién cambió qué, cuándo y por qué, reduciendo pérdida de memoria y conflictos.', example:'Sin control de versiones, la trazabilidad del prototipo se vuelve frágil.' },
+  { term:'Datos', cat:'Información / Técnica', brief:'Elementos registrados que sirven como materia prima para análisis o procesamiento.', operative:'Los datos no equivalen automáticamente a evidencia ni a verdad; requieren contexto, validación y criterio.', example:'El equipo confundió datos parciales con conclusión final.' },
+  { term:'Design for InterOperability', cat:'Diseño / Arquitectura', brief:'Principio de diseño orientado a compatibilidad, migración y reutilización entre sistemas.', operative:'Implica crear contenidos, datos y estructuras que funcionen entre Markdown, JSON, HTML, GitHub, Obsidian y asistentes IA.', example:'La plantilla fue construida con Design for InterOperability desde el inicio.' },
+  { term:'Dr. Watson GPT 2025', cat:'Narrativa / IA', brief:'Asistente virtual misterioso del universo del juego.', operative:'Apoya con preguntas, pistas, organización y reflexión, pero no sustituye el juicio humano ni resuelve el caso por el equipo.', example:'Watson sugirió una hipótesis, pero el equipo tuvo que verificarla.' },
+  { term:'Equipo Holmes', cat:'Juego / Colaboración', brief:'Equipo de 5 integrantes con roles funcionales diferenciados que opera como micro-laboratorio de investigación.', operative:'Sus cinco roles son: Arquitectura, Interfaz, Lógica, Testing y Quinto Elemento.', example:'El Equipo Holmes 01 cerró el caso con expediente completo.' },
+  { term:'Escalabilidad', cat:'Arquitectura / Técnica', brief:'Capacidad de un sistema de crecer en volumen, usuarios o complejidad sin degradarse estructuralmente.', operative:'En el proyecto implica diseñar sistemas que puedan ampliarse sin refactorización masiva.', example:'El MVP fue diseñado pensando en escalabilidad para versiones futuras.' },
+  { term:'Evidencia', cat:'Investigación / Verdad', brief:'Pieza de información verificable que sostiene o refuta una hipótesis o afirmación dentro del caso.', operative:'Toda evidencia requiere ID único, origen documentado, responsable y cadena de custodia mínima.', example:'Sin evidencia, la conclusión no puede sostenerse.' },
+  { term:'Expediente de Caso', cat:'Documentación / Juego', brief:'Documento oficial que organiza, documenta y preserva la trazabilidad completa de un caso.', operative:'Es la fuente principal de verdad documental. Incluye portada, equipo, hipótesis, evidencias, análisis, conclusión y checklist de cierre.', example:'El expediente del Caso 1 fue cerrado con trazabilidad completa.' },
+  { term:'Facultad', cat:'Institución / Educación', brief:'Unidad académica universitaria que aporta la perspectiva disciplinar central de un caso.', operative:'Cada uno de los 10 casos está anclado en una facultad distinta, garantizando transdisciplinariedad.', example:'El Caso 3 corresponde a la facultad de Ciencias Naturales.' },
+  { term:'Ficha de Evidencia Individual', cat:'Documentación', brief:'Plantilla que documenta una sola evidencia de manera trazable y verificable.', operative:'Se usa una ficha por evidencia. Incluye ID, tipo, origen, cadena de custodia, transformaciones y análisis interpretativo.', example:'Cada nueva evidencia requiere su propia ficha antes de entrar al expediente.' },
+  { term:'Formato Abierto', cat:'Tecnología / Interoperabilidad', brief:'Especificación de archivo libre de restricciones de licencia que garantiza accesibilidad y durabilidad.', operative:'Los formatos abiertos del proyecto son: Markdown (MD), JSON, HTML y texto plano.', example:'El uso de formatos abiertos facilita la migración entre sistemas.' },
+  { term:'GitHub', cat:'Herramienta / Repositorio', brief:'Plataforma de control de versiones y colaboración basada en Git.', operative:'Se usa como repositorio versionado del proyecto para originales, plantillas y código del MVP.', example:'El repositorio GitHub debe mantenerse limpio y con README actualizado.' },
+  { term:'Hackatón Ético', cat:'Pedagogía / Evento', brief:'Evento intensivo de creación e investigación donde los equipos resuelven casos bajo criterios éticos y técnicos.', operative:'En este proyecto funciona como contexto de juego real, con entregables verificables y evaluación por competencias.', example:'El hackatón ético activó los casos del tramo inicial.' },
+  { term:'HTML', cat:'Tecnología / Web', brief:'Lenguaje de marcado para estructurar contenido en la web.', operative:'En el proyecto, el monolito HTML es el formato del MVP principal. Debe ser autocontenido, sin dependencias de servidor.', example:'El MVP es un archivo HTML que abre directamente en el navegador.' },
+  { term:'Identificador Único', cat:'Ingeniería / Documentación', brief:'Código que distingue sin ambigüedad un objeto dentro del sistema.', operative:'Todo expediente, evidencia, badge, sesión y ficha tiene un identificador único para evitar confusión y duplicidad.', example:'La evidencia E-003 no puede existir dos veces en el mismo expediente.' },
+  { term:'Inferencia', cat:'Epistemología / Investigación', brief:'Conclusión o deducción derivada de la observación de evidencias, distinguida explícitamente del dato directo.', operative:'En el proyecto toda inferencia debe declararse como tal y diferenciarse de los datos observables.', example:'Eso es una inferencia del equipo, no un dato verificado.' },
+  { term:'Integridad', cat:'Ética / Documentación', brief:'Condición por la cual la información no ha sido alterada sin registro y puede rastrearse hasta su origen.', operative:'La integridad en el proyecto implica que ningún documento, evidencia o archivo puede modificarse sin dejar constancia.', example:'La integridad del expediente se verificó antes del cierre.' },
+  { term:'Interoperabilidad', cat:'Arquitectura / Diseño', brief:'Capacidad de sistemas, herramientas y formatos de trabajar juntos sin pérdida semántica relevante.', operative:'Los documentos del proyecto deben poder circular entre Markdown, JSON, HTML, Obsidian, GitHub y asistentes IA.', example:'La interoperabilidad es un criterio permanente de diseño en este proyecto.' },
+  { term:'Investigación Transdisciplinaria', cat:'Metodología / Pedagogía', brief:'Proceso que integra perspectivas de múltiples disciplinas para abordar problemas complejos.', operative:'En el proyecto, ningún caso puede resolverse desde una sola disciplina. La colaboración transdisciplinar es estructural.', example:'La investigación transdisciplinaria requiere vocabulario compartido y roles claros.' },
+  { term:'JSON', cat:'Tecnología / Datos', brief:'Formato de intercambio de datos ligero, legible por humanos y máquinas.', operative:'Se usa para estructurar datos de glosario, badges, expedientes y configuraciones del sistema.', example:'Los datos del MVP están embebidos como objetos JSON dentro del script.' },
+  { term:'Junior DevOps', cat:'Cultura / Equipo', brief:'Denominación del rol de integrante del equipo de 5 dentro del juego, enfatizando cultura de trabajo colaborativa, trazable y de mejora continua.', operative:'No se limita a programación; incluye investigación, documentación, verificación y responsabilidad compartida.', example:'Cada Junior DevOps tiene un rol funcional diferenciado dentro del equipo.' },
+  { term:'Markdown (MD)', cat:'Formato / Documentación', brief:'Lenguaje de marcado ligero para crear documentos estructurados en texto plano.', operative:'Es el formato base oficial del proyecto para originales, plantillas, documentación maestra y entregables textuales.', example:'El expediente se trabaja en Markdown (MD) y puede exportarse fácilmente.' },
+  { term:'Mega_Glosario_Único', cat:'Documentación / Vocabulario', brief:'Fuente terminológica oficial del proyecto que estabiliza el vocabulario transdisciplinario.', operative:'Incluye definición breve, definición operativa, sinónimos controlados y ejemplos de uso para cada término.', example:'Si hay duda sobre un término, la fuente es el Mega_Glosario_Único.' },
+  { term:'Metadatos', cat:'Documentación / Estructura', brief:'Datos que describen otros datos: fecha, versión, responsable, estado, ID y contexto de un documento.', operative:'En el proyecto, cada plantilla comienza con un bloque YAML de metadatos para facilitar búsqueda y trazabilidad.', example:'Los metadatos del expediente incluyen fecha de apertura y responsable de última actualización.' },
+  { term:'Monolito HTML', cat:'Tecnología / MVP', brief:'Archivo HTML único y autocontenido que incluye estilos, lógica y datos sin dependencias externas.', operative:'Es el formato del MVP del proyecto. No requiere servidor, npm ni build tools. Funciona con doble clic en cualquier navegador.', example:'El MVP es un monolito HTML que corre offline sin configuración.' },
+  { term:'Multimodalidad', cat:'Metodología / Evidencia', brief:'Uso de múltiples tipos de evidencia (texto, imagen, audio, video, datos) dentro de un mismo proceso investigativo.', operative:'En el proyecto, la multimodalidad es especialmente relevante en los casos de complejidad alta y épica.', example:'El Caso 10 requiere verificación multimodal de evidencias contradictorias.' },
+  { term:'Obsidian', cat:'Herramienta / Gestión', brief:'Aplicación de notas en Markdown diseñada para pensamiento en red.', operative:'Es el Segundo Cerebro Oficial del Proyecto. Toda documentación crítica debe tener ruta verificable en Markdown y, cuando aplique, en Obsidian.', example:'El expediente tiene su espejo en el Segundo Cerebro Oficial del Proyecto: Obsidian.' },
+  { term:'Original Maestro', cat:'Documentación / Versionado', brief:'Archivo principal, validado y autorizado que sirve como fuente de verdad para copias y derivados.', operative:'En el proyecto, los originales maestros se trabajan en Markdown (MD) y se versionan en el repositorio oficial.', example:'El original maestro del expediente no debe editarse sin registro en el changelog.' },
+  { term:'Pensamiento Computacional', cat:'Pedagogía / Competencia', brief:'Habilidad para descomponer problemas, reconocer patrones, abstraer y diseñar soluciones algorítmicas.', operative:'En el proyecto, el pensamiento computacional se combina con razonamiento ético y documentación rigurosa.', example:'El pensamiento computacional es necesario para estructurar el análisis del Caso 8.' },
+  { term:'Prompt', cat:'IA / Interacción', brief:'Instrucción o consulta enviada a un asistente de IA para obtener una respuesta o acción.', operative:'En el proyecto, los prompts relevantes usados con IA deben registrarse en el expediente para transparencia y trazabilidad.', example:'El prompt utilizado con Dr. Watson GPT 2025 fue registrado en el log de IA.' },
+  { term:'Quinto Elemento', cat:'Equipo / Rol', brief:'Integrante del equipo de 5 a cargo de la documentación, custodia de evidencias y trazabilidad ética del proceso.', operative:'No compite por programar físicamente como rol principal. Su misión es sostener la memoria del equipo.', example:'El Quinto Elemento cerró la bitácora de sesión antes de finalizar el trabajo.' },
+  { term:'Repositorio', cat:'Ingeniería / Gestión', brief:'Espacio estructurado de almacenamiento versionado para archivos del proyecto.', operative:'En el proyecto, el repositorio oficial alberga plantillas, documentación, código y changelog bajo control de versiones.', example:'Todos los originales deben vivir en el repositorio antes de distribuirse.' },
+  { term:'Segundo Cerebro Oficial del Proyecto', cat:'Documentación / Gestión', brief:'Sistema de gestión del conocimiento personal del proyecto basado en Obsidian.', operative:'Complementa el repositorio MD con notas vinculadas, tableros y relaciones entre conceptos. Es Obsidian.', example:'La ruta del expediente en el Segundo Cerebro Oficial del Proyecto es Obsidian/Casos/Caso-01.' },
+  { term:'Single Source of Truth', cat:'Arquitectura / Documentación', brief:'Principio que establece que cada dato o decisión tiene un único lugar oficial de origen.', operative:'En el proyecto, el expediente de caso es la Single Source of Truth para cada caso investigado.', example:'El expediente es la Single Source of Truth; no el chat, no la memoria del equipo.' },
+  { term:'Trazabilidad', cat:'Documentación / Integridad', brief:'Capacidad de rastrear el origen, transformaciones y uso de cualquier dato, evidencia o decisión.', operative:'Es un criterio permanente de evaluación en el proyecto. Sin trazabilidad, la cadena de custodia se rompe.', example:'La trazabilidad del caso 5 permitió reconstruir cada decisión del equipo.' },
+  { term:'Uso Ético y Responsable de IA', cat:'Ética / IA', brief:'Conjunto de prácticas que garantizan que la IA se use como herramienta de apoyo, con transparencia, validación humana y sin fabricar evidencia.', operative:'En el proyecto, toda interacción relevante con IA debe documentarse en el log de IA del expediente.', example:'El uso ético de IA quedó documentado en la sección 11 del expediente.' },
+  { term:'Validación Humana', cat:'Epistemología / IA', brief:'Proceso por el cual un ser humano verifica, corrige o aprueba la salida de un sistema de IA antes de adoptarla.', operative:'En el proyecto, ninguna salida de IA puede adoptarse como evidencia o conclusión sin validación humana previa.', example:'La salida de Watson fue revisada por el equipo antes de usarla en el análisis.' }
+];
+
+const TEMPLATES = [
+  {
+    icon: '📂',
+    version: 'V1.1 Normalizada',
+    name: 'Plantilla Genérica Oficial del Expediente de Caso Único',
+    file: 'Plantilla_Expediente_V1_1.md',
+    desc: 'Documento central del sistema. Organiza, documenta y preserva la trazabilidad completa de un caso único. Funciona como fuente principal de verdad documental, facilita la evaluación y protege la cadena de custodia de las evidencias.',
+    when: 'Una por caso. Abrir al inicio del caso y mantener actualizada hasta el cierre.',
+    fields: ['Metadatos YAML', 'Portada del caso', 'Identidad del equipo', 'Resumen ejecutivo', 'Línea de tiempo', 'Inventario de evidencias', 'Cadena de custodia', 'Registro de IA', 'Bitácora', 'Análisis', 'Conclusión', 'Checklist de cierre'],
+    sections: 24
+  },
+  {
+    icon: '🔍',
+    version: 'V1.1 Normalizada',
+    name: 'Plantilla Oficial de Evidencia Individual',
+    file: 'Plantilla_Evidencia_V1_1.md',
+    desc: 'Documenta una sola evidencia de manera trazable, verificable y reutilizable. Debe usarse cada vez que una evidencia entre formalmente al expediente de un caso. Incluye cadena de custodia mínima y análisis interpretativo.',
+    when: 'Una por evidencia. Crear al capturar cada pieza y vincularla al expediente.',
+    fields: ['Metadatos YAML', 'Identificación general', 'Descripción ampliada', 'Origen y procedencia', 'Archivo o soporte', 'Cadena de custodia', 'Transformaciones', 'Confiabilidad', 'Análisis interpretativo', 'Uso de IA', 'Valor documental'],
+    sections: 15
+  },
+  {
+    icon: '📓',
+    version: 'V1.0',
+    name: 'Plantilla Oficial de Bitácora de Sesión',
+    file: 'Plantilla_Bitacora_V1_0.md',
+    desc: 'Registra una sesión de trabajo del equipo. Su función es preservar memoria operativa, decisiones, avances, problemas, uso de IA y trazabilidad del proceso. La redacta el Quinto Elemento con validación del equipo.',
+    when: 'Una por sesión. Completar al terminar cada bloque formal de trabajo.',
+    fields: ['Metadatos YAML', 'Identificación de sesión', 'Participación del equipo', 'Agenda ejecutada', 'Desarrollo narrativo', 'Avances logrados', 'Evidencias nuevas', 'Uso de IA', 'Decisiones tomadas', 'Problemas detectados', 'Próximos pasos'],
+    sections: 17
+  }
+];
+
+// ═══════════════════════════════════════════════
+// RENDER FUNCTIONS
+// ═══════════════════════════════════════════════
+
+// ── CASES ─────────────────────────────────────
+function renderCases() {
+  const grid = document.getElementById('casesGrid');
+  grid.innerHTML = CASES.map(c => {
+    const dots = Array.from({length:10}, (_,i) =>
+      `<span class="complexity-dot${i < c.complexity ? ' filled' : ''}"></span>`
+    ).join('');
+    const statusLabel = c.status === 'active' ? 'Activo' : c.status === 'epic' ? 'Épico' : 'Bloqueado';
+    const statusClass = c.status === 'active' ? 'status-active' : c.status === 'epic' ? 'status-epic' : 'status-locked';
+    const badgeTags = c.badges.map(b => `<span class="badge-tag">${b}</span>`).join('');
+    const simBadge = c.simulation ? `<span class="badge-tag" style="background:rgba(46,93,75,0.12);color:var(--green);border:1px solid rgba(46,93,75,0.2)">▶ Nivel simulado</span>` : '';
+    return `
+    <article class="case-card ${c.status === 'locked' ? 'locked' : ''}" style="cursor:pointer" onclick="openCase(${c.level-1})">
+      <div class="case-header">
+        <div class="case-level-block">
+          <span class="case-level-label">Nivel</span>
+          <span class="case-level-num">${String(c.level).padStart(2,'0')}</span>
+        </div>
+        <div class="case-meta">
+          <span class="status-chip ${statusClass}">${statusLabel}</span>
+          <div class="complexity-bar">${dots}</div>
+        </div>
+      </div>
+      <div class="case-body">
+        <div class="case-discipline">${c.discipline}</div>
+        <h3 class="case-title">${c.title}</h3>
+        <p class="case-premise">${c.premise.slice(0,140)}…</p>
+        <div class="case-question">${c.question}</div>
+      </div>
+      <div class="case-footer">${badgeTags}${simBadge}</div>
+    </article>`;
+  }).join('');
+}
+
+// ── BADGES ─────────────────────────────────────
+let activeFam = 0;
+
+function renderBadgesFilter() {
+  const div = document.getElementById('badgesFilter');
+  const all = `<button class="filter-btn active" onclick="filterBadges(0,this)">Todas las familias</button>`;
+  const fams = Object.entries(FAM_LABELS).map(([k,v]) =>
+    `<button class="filter-btn" onclick="filterBadges(${k},this)">${v}</button>`
+  ).join('');
+  div.innerHTML = all + fams;
+}
+
+function filterBadges(fam, btn) {
+  activeFam = fam;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderBadgesGrid();
+}
+
+function renderBadgesGrid() {
+  const grid = document.getElementById('badgesGrid');
+  const filtered = activeFam === 0 ? BADGES : BADGES.filter(b => b.fam === activeFam);
+  grid.innerHTML = filtered.map(b => {
+    const isEpic = b.level === 'Épico';
+    const typeLabel = b.type === 'Q5' ? '★ Exclusivo Quinto Elemento' : `Otorgación: ${b.type}`;
+    return `
+    <div class="badge-card fam-${b.fam}" style="cursor:pointer" onclick="openBadge('${b.id}')">
+      <div class="badge-top">
+        <div class="badge-icon-wrap">${b.icon}</div>
+        <span class="badge-level${isEpic?' epic':''}">${b.level}</span>
+      </div>
+      <div class="badge-id-line">${b.id} · ${FAM_LABELS[b.fam]}</div>
+      <div class="badge-name">${b.name}</div>
+      <p class="badge-criterion">${b.criterion}</p>
+      <div class="badge-type">${typeLabel}</div>
+      <div style="margin-top:8px;font-family:var(--font-mono);font-size:9px;color:var(--green);letter-spacing:1px">Ver detalle →</div>
+    </div>`;
+  }).join('');
+}
+
+// ── GLOSSARY ───────────────────────────────────
+function renderGlossary(terms) {
+  const list = document.getElementById('glossaryList');
+  const count = document.getElementById('glossaryCount');
+  count.textContent = `${terms.length} término${terms.length!==1?'s':''} encontrado${terms.length!==1?'s':''}`;
+
+  if (terms.length === 0) {
+    list.innerHTML = `<div class="no-results">No se encontraron términos para esta búsqueda.</div>`;
+    return;
+  }
+
+  list.innerHTML = terms.map((t,i) => `
+    <div class="glossary-item" id="gi-${i}">
+      <button class="glossary-term-btn" onclick="toggleGlossary(${i})">
+        <span class="term-name">${t.term}</span>
+        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+          <span class="term-cat">${t.cat}</span>
+          <span class="term-chevron">▼</span>
+        </div>
+      </button>
+      <div class="glossary-body">
+        <p class="def-brief">${t.brief}</p>
+        <p class="def-operative">${t.operative}</p>
+        ${t.example ? `<div class="def-example">💡 ${t.example}</div>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleGlossary(i) {
+  const el = document.getElementById('gi-'+i);
+  el.classList.toggle('open');
+}
+
+function filterGlossary() {
+  const q = document.getElementById('glossarySearch').value.toLowerCase().trim();
+  const filtered = q ? GLOSSARY.filter(t =>
+    t.term.toLowerCase().includes(q) ||
+    t.cat.toLowerCase().includes(q) ||
+    t.brief.toLowerCase().includes(q) ||
+    t.operative.toLowerCase().includes(q)
+  ) : GLOSSARY;
+  renderGlossary(filtered);
+}
+
+// ── TEMPLATES ──────────────────────────────────
+function renderTemplates() {
+  const list = document.getElementById('templatesList');
+  list.innerHTML = TEMPLATES.map((t,i) => {
+    const fields = t.fields.map(f => `<span class="field-tag">${f}</span>`).join('');
+    return `
+    <div class="template-card">
+      <div class="template-icon-col">${t.icon}</div>
+      <div class="template-content">
+        <div class="template-version">${t.version} · ${t.sections} secciones</div>
+        <div class="template-name">${t.name}</div>
+        <p class="template-desc">${t.desc}</p>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:12px;"><strong>Cuándo usarla:</strong> ${t.when}</p>
+        <div class="template-fields">${fields}</div>
+        <div class="template-actions">
+          <a class="btn-download btn-primary" href="templates/${t.file}" download>
+            ⬇ Descargar Plantilla
+          </a>
+          <button class="btn-download btn-secondary" onclick="openTpl(${i})">
+            👁 Vista previa
+          </button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── MODAL: CASES ───────────────────────────────
+const BADGE_STEPS = {
+  'BADGE-001': ['Observa el caso sin sacar conclusiones inmediatas','Registra al menos 3 detalles que otros pasaron por alto','Conecta cada observación con su relevancia para el caso'],
+  'BADGE-002': ['Identifica los datos observables del caso','Formula una inferencia clara a partir de al menos 2 evidencias','Separa explícitamente qué es dato y qué es tu interpretación'],
+  'BADGE-003': ['Analiza al menos 3 casos o ejemplos similares','Identifica regularidades o patrones que se repiten','Presenta una síntesis visual o escrita clara y verificable'],
+  'BADGE-004': ['Localiza al menos 3 fuentes distintas y pertinentes','Registra fecha, origen y función de cada fuente','Evita apoyarte en una sola fuente para tus conclusiones'],
+  'BADGE-005': ['Usa al menos 3 fuentes o enfoques distintos para verificar','Documenta coincidencias y contradicciones entre las fuentes','Explica por qué tu conclusión es razonable a pesar de la incertidumbre'],
+  'BADGE-006': ['Identifica la afirmación falsa o débil con evidencia','Desmóntala con argumentos sin atacar a las personas','Propón una interpretación alternativa verificable'],
+  'BADGE-007': ['Investiga un caso de alta complejidad con rigor completo','Mantén coherencia documental entre todas las secciones','Presenta una conclusión robusta que integra observación, verificación y juicio ético'],
+  'BADGE-008': ['Abre el expediente del caso con todos los metadatos','Completa todas las secciones esenciales con información real','Mantén control de versiones desde la primera entrada'],
+  'BADGE-009': ['Asigna un ID único a la evidencia antes de registrarla','Documenta origen, responsable, transformaciones y fecha','Vincula la evidencia al caso, hipótesis o decisión correspondiente'],
+  'BADGE-010': ['Mantén coherencia entre expediente, bitácoras y repositorio durante todo el juego','Usa nomenclatura consistente en todos los archivos','Evita vacíos críticos de memoria entre sesiones'],
+  'BADGE-011': ['Mantén la cadena de custodia sin rupturas desde apertura hasta cierre','Documenta cada transferencia, transformación y validación','Supera una auditoría documental con resultado positivo'],
+  'BADGE-012': ['Registra el prompt o instrucción usada con Dr. Watson GPT 2025','Describe el propósito de la consulta en el expediente','Verifica la salida antes de adoptarla como evidencia o conclusión'],
+  'BADGE-013': ['Identifica una salida de IA que parece incorrecta o sesgada','Contrástala con fuentes externas o evidencia adicional','Documenta la corrección con claridad en el IA-log'],
+  'BADGE-014': ['Usa IA sin ocultar su intervención al equipo ni en el expediente','No uses IA para fabricar o distorsionar evidencia','Reconoce los límites y riesgos de la IA en tu contexto específico'],
+  'BADGE-015': ['Integra IA de forma eficaz y crítica en todo el proceso','Registra todas las interacciones relevantes con suficiente detalle','Demuestra que el juicio humano del equipo domina sobre la IA en todo momento'],
+  'BADGE-016': ['Define roles claros desde la primera sesión','Distribuye tareas con criterio y evita la acumulación en una sola persona','Avanza de forma consistente sin caos operativo evidente'],
+  'BADGE-017': ['Documenta el trabajo suficientemente para que otro miembro pueda continuar','Delega tareas con instrucciones claras','Demuestra que el equipo continúa sin depender de una sola persona'],
+  'BADGE-018': ['Sostén un desacuerdo con argumentos y evidencias, sin atacar a compañeros','Escucha activamente la posición contraria','Llega a una síntesis documentada después del debate'],
+  'BADGE-019': ['Explica tus hallazgos con claridad y orden comprensible','Vincula cada afirmación directamente a evidencias','Adapta el lenguaje al público sin perder rigor'],
+  'BADGE-020': ['Organiza las evidencias visualmente de forma útil, no decorativa','Muestra las relaciones entre evidencias con claridad','Asegura que el tablero sea legible para alguien externo al equipo'],
+  'BADGE-021': ['Construye un hilo conductor claro para tu investigación','Mantén fidelidad a la evidencia mientras cuentas la historia del caso','Aporta valor pedagógico o comunitario real con la narrativa'],
+  'BADGE-022': ['Construye un prototipo HTML monolítico que funcione en el navegador','Incluye la funcionalidad básica relacionada con el caso','Documenta la solución en un README técnico'],
+  'BADGE-023': ['Conecta interfaz, lógica, evidencias y documentación sin fracturas críticas','Asegura consistencia funcional entre los componentes','Entrega documentación técnica suficiente para que otro entienda el sistema'],
+  'BADGE-024': ['Demuestra que el MVP tiene utilidad real para el caso investigado','Asegura que el diseño sea comprensible sin instrucciones previas','Vincula el MVP directamente con las evidencias o badges del caso'],
+  'BADGE-025': ['Construye una solución técnicamente robusta y elegante','Mantén consistencia estética y funcional en todo el MVP','Supera auditoría técnica y entrega documentación y pruebas suficientes'],
+  'BADGE-026': ['Identifica al menos un fallo relevante antes de la entrega final','Describe el bug con claridad: qué ocurre, dónde, cuándo','Documenta el impacto estimado del fallo'],
+  'BADGE-027': ['Realiza una revisión explícita de calidad documental, ética o técnica','Presenta hallazgos claros con evidencia de soporte','Propón sugerencias accionables, no solo críticas'],
+  'BADGE-028': ['Completa el checklist de cierre sin vacíos críticos','Asegura coherencia entre todos los componentes del expediente','Entrega con baja tasa de errores críticos según rúbrica'],
+  'BADGE-029': ['Redacta la bitácora completa de la sesión con todos los campos esenciales','Vincula las decisiones a las evidencias correspondientes','Registra el uso de IA con honestidad y detalle'],
+  'BADGE-030': ['Mantén el orden de carpetas root consistente durante todo el proyecto','Actualiza el changelog tras cada cambio significativo','Usa nomenclatura estable y comprensible en todos los archivos'],
+  'BADGE-031': ['Mantén integridad documental sobresaliente durante toda la experiencia','Demuestra conducta ética visible en todas las interacciones del equipo','Recibe validación positiva del mentor sobre la documentación del equipo'],
+  'BADGE-032': ['Sé el factor decisivo en la preservación de la memoria del equipo','Demuestra trazabilidad completa y custodia impecable del expediente','Recibe reconocimiento explícito del mentor por liderazgo documental'],
+  'BADGE-033': ['Acumula múltiples badges de distintas familias','Sostén excelencia investigativa con evidencia a lo largo de todo el juego','Recibe validación del jurado en la evaluación final'],
+  'BADGE-034': ['El equipo opera con coherencia y rigor en todos los casos trabajados','Entrega un MVP funcional con documentación robusta','Demuestra comportamiento ético sostenido durante toda la experiencia'],
+  'BADGE-035': ['Deja documentación reusable, clara y valiosa en el repositorio','Produce materiales con valor pedagógico verificable para futuras cohortes','Recibe validación institucional sobre la calidad del legado'],
+};
+
+const BADGE_EVMIN = {
+  'BADGE-001': 'Bitácora de sesión con al menos 3 observaciones, expediente del caso con anotaciones vinculadas.',
+  'BADGE-002': 'Matriz de hipótesis con inferencias separadas de datos, conclusión documentada con evidencia de soporte.',
+  'BADGE-003': 'Infografía, tabla comparativa o informe intermedio que muestre el patrón identificado.',
+  'BADGE-004': 'Ficha de fuentes con mínimo 3 registros: fecha, origen y función de cada fuente.',
+  'BADGE-005': 'Sección de verificación del expediente que muestre el proceso de triangulación y la conclusión razonada.',
+  'BADGE-006': 'Bitácora de debate, informe comparativo o defensa del caso con la refutación documentada.',
+  'BADGE-007': 'Expediente completo de un caso de alta dificultad con trazabilidad íntegra y revisión humana validada.',
+  'BADGE-008': 'Expediente con secciones esenciales completas, README interno y control de versiones básico activo.',
+  'BADGE-009': 'Ficha individual de evidencia con ID, origen, responsable, transformaciones y estado de verificación.',
+  'BADGE-010': 'Repositorio sincronizado con expediente, bitácoras y nomenclatura consistente durante toda la experiencia.',
+  'BADGE-011': 'Auditoría documental con resultado positivo, expediente de cierre con trazabilidad auditada por mentor.',
+  'BADGE-012': 'IA-Log en expediente con propósito de la consulta, prompt resumido y estado de validación humana.',
+  'BADGE-013': 'IA-Log y ficha de evidencia que documenten el error detectado y la corrección realizada.',
+  'BADGE-014': 'Declaración ética completada, expediente sin intervención de IA oculta, revisión humana positiva.',
+  'BADGE-015': 'IA-Logs consolidados de todo el proyecto más auditoría ética validada por mentor del equipo.',
+  'BADGE-016': 'Bitácoras que muestren roles claros, plan de sesión cumplido y avances consistentes documentados.',
+  'BADGE-017': 'Bitácoras y expediente que demuestren continuidad sin dependencia de una sola persona del equipo.',
+  'BADGE-018': 'Bitácora o acta de decisiones que muestre el debate, los argumentos y la síntesis posterior.',
+  'BADGE-019': 'Informe, presentación o defensa documentada con ideas ordenadas y vinculación directa a evidencias.',
+  'BADGE-020': 'Tablero digital con capturas de pantalla, legibilidad verificada y presentación del equipo.',
+  'BADGE-021': 'Presentación final, informe narrativo o prototipo que muestre el hilo conductor de la investigación.',
+  'BADGE-022': 'Archivo HTML funcional, README técnico básico y prueba operativa documentada.',
+  'BADGE-023': 'MVP con componentes conectados, changelog técnico y documentación suficiente para auditarlo.',
+  'BADGE-024': 'Demo funcional, manual breve de uso y observación positiva del mentor sobre la utilidad real.',
+  'BADGE-025': 'MVP validado, auditoría técnica superada, expediente de cierre con pruebas y documentación completa.',
+  'BADGE-026': 'Test log o issue list con el bug descrito, impacto estimado y evidencia de la revisión realizada.',
+  'BADGE-027': 'Checklist de auditoría, informe de hallazgos con sugerencias accionables y revisión del mentor.',
+  'BADGE-028': 'Paquete de entrega completo con checklist de cierre firmado y validación interna del equipo.',
+  'BADGE-029': 'Bitácora de sesión completa con decisiones, evidencias vinculadas y uso de IA documentado.',
+  'BADGE-030': 'Estructura de repositorio ordenada, changelog actualizado y nomenclatura estable verificada.',
+  'BADGE-031': 'Auditoría documental positiva, evaluación ética validada por mentor y paquete final sin faltas graves.',
+  'BADGE-032': 'Expediente de caso, bitácoras y revisión integral que demuestren liderazgo documental excepcional.',
+  'BADGE-033': 'Historial completo de badges, cierre del juego y validación del jurado con evidencia sostenida.',
+  'BADGE-034': 'Paquete completo: MVP funcional, documentación robusta y evaluación final positiva del equipo.',
+  'BADGE-035': 'Repositorio limpio con manuales, plantillas reutilizables y evaluación institucional del valor pedagógico.',
+};
+
+const BADGE_TEAMS_EARNED = {
+  'BADGE-001': ['Equipo Clio','Equipo Hermes','Equipo Darwin','Equipo Freud','Equipo Fibonacci'],
+  'BADGE-002': ['Equipo Clio','Equipo Hermes'],
+  'BADGE-003': [],
+  'BADGE-004': ['Equipo Clio','Equipo Hermes','Equipo Darwin','Equipo Freud','Equipo Fibonacci'],
+  'BADGE-005': ['Equipo Clio','Equipo Hermes'],
+  'BADGE-006': [],
+  'BADGE-007': [],
+  'BADGE-008': ['Equipo Clio','Equipo Hermes','Equipo Darwin','Equipo Freud','Equipo Fibonacci'],
+  'BADGE-009': ['Equipo Clio','Equipo Darwin','Equipo Fibonacci'],
+  'BADGE-010': [],
+  'BADGE-011': [],
+  'BADGE-012': ['Equipo Clio','Equipo Hermes','Equipo Freud','Equipo Fibonacci'],
+  'BADGE-013': ['Equipo Hermes','Equipo Freud'],
+  'BADGE-014': [],
+  'BADGE-015': [],
+  'BADGE-016': ['Equipo Clio'],
+  'BADGE-017': [],
+  'BADGE-018': [],
+  'BADGE-019': ['Equipo Hermes'],
+  'BADGE-020': [],
+  'BADGE-021': [],
+  'BADGE-022': [],
+  'BADGE-023': [],
+  'BADGE-024': [],
+  'BADGE-025': [],
+  'BADGE-026': [],
+  'BADGE-027': [],
+  'BADGE-028': [],
+  'BADGE-029': ['Equipo Clio','Equipo Hermes','Equipo Darwin','Equipo Freud','Equipo Fibonacci'],
+  'BADGE-030': [],
+  'BADGE-031': [],
+  'BADGE-032': [],
+  'BADGE-033': [],
+  'BADGE-034': [],
+  'BADGE-035': [],
+};
+
+function openCase(idx) {
+  const c = CASES[idx];
+  const statusLabel = c.status === 'active' ? 'Activo' : c.status === 'epic' ? 'Épico' : 'Bloqueado';
+  const chipClass = c.status === 'active' ? 'ok' : c.status === 'epic' ? 'epic' : '';
+  const comps = c.competencies.map(x=>`<span class="cm-comp">${x}</span>`).join('');
+  const evts = c.evidenceTypes.map(x=>`<span class="cm-evtype">${x}</span>`).join('');
+  const prods = c.products.map(p=>`<div class="cm-prod"><div class="cm-prod-dot"></div>${p}</div>`).join('');
+  const badgeMinis = c.badges.map((b,i)=>{
+    const bd = BADGES.find(bx=>bx.id===c.badgeIds[i]);
+    return `<div class="cm-bmini" onclick="event.stopPropagation();closeCaseHelper();openBadge('${c.badgeIds[i]}')">${bd?bd.icon:'🏅'}<span class="cm-bmini-icon"></span>${b}</div>`;
+  }).join('');
+
+  let simHTML = '';
+  if (c.simulation) {
+    const s = c.simulation;
+    const hyps = s.hypothesis.map(h=>`
+      <div class="cm-sim-hyp">
+        <span class="cm-sim-h-tag ${h.status==='strong'?'h-strong':h.status==='open'?'h-open':'h-weak'}">${h.id}</span>
+        ${h.text}
+      </div>`).join('');
+    const evs = s.evidences.map(e=>`
+      <div class="cm-sim-ev">
+        <span class="cm-ev-id">${e.id}</span>
+        <span class="cm-ev-st ${e.status==='ok'?'ev-ok':'ev-an'}">${e.status==='ok'?'Validada':'En análisis'}</span>
+        ${e.desc}
+      </div>`).join('');
+    const bEarned = s.badgesEarned.map(b=>`<span class="csb-earned">✓ ${b}</span>`).join('');
+    const bProg = s.badgesInProgress.map(b=>`<span class="csb-prog">⟳ ${b}</span>`).join('');
+    simHTML = `
+    <div class="cm-sim">
+      <div class="cm-sim-ey">Nivel simulado · Piloto V1.0 en curso</div>
+      <div class="cm-sim-team">${s.team} <span style="font-family:var(--font-mono);font-size:11px;color:rgba(244,234,213,0.4);font-weight:400">${s.teamCode}</span></div>
+      <div class="cm-sim-phase">${s.phase}</div>
+      <div class="cm-sim-prog-wrap"><div class="cm-sim-prog-fill" style="width:${s.progress}%"></div></div>
+      <div class="cm-sim-prog-row"><span>Avance del caso</span><span>${s.progress}%</span></div>
+      <div class="cm-sim-grid">
+        <div class="cm-sim-block">
+          <div class="cm-sim-bl">Hipótesis activas</div>
+          ${hyps}
+        </div>
+        <div class="cm-sim-block">
+          <div class="cm-sim-bl">Evidencias clave</div>
+          ${evs}
+        </div>
+        <div class="cm-sim-block" style="grid-column:1/-1">
+          <div class="cm-sim-bl">Badges</div>
+          <div class="cm-sim-badges">${bEarned}${bProg}</div>
+        </div>
+      </div>
+      <div class="cm-sim-next">→ ${s.nextStep}</div>
+    </div>`;
+  }
+
+  document.getElementById('caseModalBox').innerHTML = `
+    <button class="modal-x" onclick="closeCase()">✕</button>
+    <div class="cm-header">
+      <div class="cm-bg-num">0${c.level}</div>
+      <div class="cm-eyebrow">Caso ${String(c.level).padStart(2,'0')} · ${c.discipline}</div>
+      <div class="cm-title">${c.title}</div>
+      <div class="cm-sub">Complejidad ${c.complexity}/10</div>
+      <div class="cm-chips">
+        <span class="cm-chip ${chipClass}">${statusLabel}</span>
+        <span class="cm-chip">${c.evidenceTypes.length} tipos de evidencia</span>
+        <span class="cm-chip">${c.products.length} productos esperados</span>
+        ${c.simulation ? '<span class="cm-chip ok">▶ Simulación activa</span>' : ''}
+      </div>
+    </div>
+    <div class="cm-body">
+      ${simHTML}
+      <div class="cm-question">${c.question}</div>
+      <div class="cm-slabel">Premisa del caso</div>
+      <p class="cm-premise">${c.premise}</p>
+      <div class="cm-slabel">Competencias del investigador</div>
+      <div class="cm-chips-row">${comps}</div>
+      <div class="cm-slabel">Tipos de evidencia esperada</div>
+      <div class="cm-chips-row">${evts}</div>
+      <div class="cm-slabel">Productos mínimos esperados</div>
+      <div class="cm-products">${prods}</div>
+      <div class="cm-slabel">Nota de dificultad</div>
+      <div class="cm-diff">${c.difficulty}</div>
+      <div class="cm-slabel">Badges aplicables — toca para ver detalle</div>
+      <div class="cm-badge-row">${badgeMinis}</div>
+    </div>`;
+  document.getElementById('caseModal').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function closeCaseHelper() { document.getElementById('caseModal').style.display = 'none'; }
+function closeCase() { document.getElementById('caseModal').style.display = 'none'; document.body.style.overflow = ''; }
+
+// ── MODAL: BADGES ───────────────────────────────
+function openBadge(id) {
+  const b = BADGES.find(x => x.id === id);
+  if (!b) return;
+  const isEpic = b.level === 'Épico';
+  const isQ5 = b.type === 'Q5';
+  const steps = (BADGE_STEPS[id] || []).map((s,i)=>
+    `<div class="bm-step"><span class="bm-step-n">${i+1}</span>${s}</div>`
+  ).join('');
+  const evMin = BADGE_EVMIN[id] || 'Evidencia verificable documentada en el expediente del caso.';
+  const teams = BADGE_TEAMS_EARNED[id] || [];
+  const teamsHTML = teams.length
+    ? teams.map(t=>`<span class="bm-sim-team">✓ ${t}</span>`).join('')
+    : `<span class="bm-sim-none">Ningún equipo lo ha obtenido todavía en el piloto actual.</span>`;
+  const typeTag = isQ5
+    ? `<span class="bm-tag bm-t-q5">★ Exclusivo Quinto Elemento</span>`
+    : `<span class="bm-tag bm-t-type">Otorgación: ${b.type}</span>`;
+
+  document.getElementById('badgeModalBox').innerHTML = `
+    <button class="modal-x" onclick="closeBadge()">✕</button>
+    <div class="bm-header">
+      <div class="bm-icon-big">${b.icon}</div>
+      <div>
+        <div class="bm-fam">${FAM_LABELS[b.fam]}</div>
+        <div class="bm-name">${b.name}</div>
+        <div class="bm-tags">
+          <span class="bm-tag ${isEpic?'bm-t-epic':'bm-t-level'}">${b.level}</span>
+          ${typeTag}
+          <span class="bm-tag" style="background:rgba(26,22,20,0.06);color:var(--muted)">${b.id}</span>
+        </div>
+      </div>
+    </div>
+    <div class="bm-body">
+      <div class="bm-sec">
+        <div class="bm-slabel">Criterio de otorgación</div>
+        <div class="bm-criterion">${b.criterion}</div>
+      </div>
+      <div class="bm-sec">
+        <div class="bm-slabel">Cómo ganarlo — pasos</div>
+        <div class="bm-steps">${steps}</div>
+      </div>
+      <div class="bm-sec">
+        <div class="bm-slabel">Evidencia mínima requerida</div>
+        <div class="bm-evbox">${evMin}</div>
+      </div>
+      <div class="bm-sec">
+        <div class="bm-slabel">Equipos que lo han obtenido — piloto V1.0</div>
+        <div class="bm-sim-row">${teamsHTML}</div>
+      </div>
+    </div>`;
+  document.getElementById('badgeModal').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function closeBadge() { document.getElementById('badgeModal').style.display = 'none'; document.body.style.overflow = ''; }
+
+// ── MODAL: TEMPLATES ────────────────────────────
+const TEMPLATE_SECTIONS = [
+  {
+    sections: [
+      { id:'yaml', label:'Metadatos YAML', content: `
+        <div class="tpl-sec-title">Metadatos del expediente</div>
+        <div class="tpl-note">Este bloque YAML va al inicio del archivo. Permite búsqueda, filtrado y sincronización con Obsidian y GitHub.</div>
+        <div class="tpl-yaml"><span class="yk">expediente_id</span>: <span class="yv">"EXP-UNICO-001"</span><br><span class="yk">titulo_caso</span>: <span class="yv">"El Manuscrito Extraviado"</span><br><span class="yk">version_expediente</span>: <span class="yv">"1.0.0"</span><br><span class="yk">estado_caso</span>: <span class="yv">"en_proceso"</span><br><span class="yk">fecha_apertura</span>: <span class="yv">"2026-04-25"</span><br><span class="yk">equipo_id</span>: <span class="yv">"EQ-HUM-01"</span><br><span class="yk">facultad</span>: <span class="yv">"Humanidades / Historia"</span><br><span class="yk">nivel_del_juego</span>: <span class="yv">"1"</span><br><span class="yk">mentor_docente</span>: <span class="yv">"Dra. Carmen Quiñones"</span><br><span class="yk">quinto_elemento</span>: <span class="yv">"Yolanda Nieves-Cruz"</span><br><span class="yk">ruta_repositorio</span>: <span class="yv">"casos/caso-01/"</span><br><span class="yk">ruta_segundo_cerebro_obsidian</span>: <span class="yv">"Sherlock/Casos/Caso-01"</span></div>` },
+      { id:'portada', label:'1. Portada del caso', content: `
+        <div class="tpl-sec-title">1. Portada del caso</div>
+        <div class="tpl-field"><div class="tpl-fl">Título del caso</div><div class="tpl-fv ex">El Manuscrito Extraviado</div></div>
+        <div class="tpl-field"><div class="tpl-fl">Código del caso</div><div class="tpl-fv code">CASO-01</div></div>
+        <div class="tpl-field"><div class="tpl-fl">Equipo responsable</div><div class="tpl-fv ex">Equipo Clio · EQ-HUM-01</div></div>
+        <div class="tpl-field"><div class="tpl-fl">Estado actual</div>
+          <div class="tpl-cb"><div class="tpl-cbx">☐</div> Borrador</div>
+          <div class="tpl-cb"><div class="tpl-cbx chk">✓</div> En investigación</div>
+          <div class="tpl-cb"><div class="tpl-cbx">☐</div> En validación</div>
+          <div class="tpl-cb"><div class="tpl-cbx">☐</div> Cerrado</div>
+        </div>
+        <div class="tpl-field"><div class="tpl-fl">Resumen de una línea</div><div class="tpl-fv ex">Se investiga la autenticidad de un manuscrito atribuido a figura histórica puertorriqueña con anomalías espectrales en la tinta.</div></div>` },
+      { id:'equipo', label:'2. Identidad del equipo', content: `
+        <div class="tpl-sec-title">2. Identidad del equipo de 5</div>
+        <table class="tpl-table"><tr><th>Rol</th><th>Nombre</th><th>Responsabilidad principal</th></tr>
+        <tr><td class="tid">Integrante 1</td><td>Sofía Maldonado-Torres</td><td>Arquitectura / visión estructural</td></tr>
+        <tr><td class="tid">Integrante 2</td><td>Rodrigo Vega-Acosta</td><td>Interfaz / experiencia</td></tr>
+        <tr><td class="tid">Integrante 3</td><td>Tanisha Morales-Rivera</td><td>Lógica / integración</td></tr>
+        <tr><td class="tid">Integrante 4</td><td>Alejandro Figueroa-Ortiz</td><td>Testing / verificación</td></tr>
+        <tr><td class="tid">Integrante 5</td><td>Yolanda Nieves-Cruz</td><td>Quinto Elemento / documentación y custodia</td></tr>
+        </table>` },
+      { id:'resumen', label:'3. Resumen ejecutivo', content: `
+        <div class="tpl-sec-title">3. Resumen ejecutivo del caso</div>
+        <div class="tpl-field"><div class="tpl-fl">Descripción breve</div><div class="tpl-fv ex">El caso investiga la autenticidad de un supuesto manuscrito del siglo XIX atribuido a una figura histórica puertorriqueña. El documento contiene una cita conveniente para debates actuales y circula en redes académicas sin origen verificable.</div></div>
+        <div class="tpl-field"><div class="tpl-fl">Pregunta rectora</div><div class="tpl-fv ex">¿Es auténtico el manuscrito, es una mala atribución o es una falsificación reciente?</div></div>
+        <div class="tpl-field"><div class="tpl-fl">Hipótesis inicial del equipo</div><div class="tpl-fv ex">El manuscrito podría ser una falsificación del siglo XX con tinta envejecida artificialmente, dado que la cita no aparece en ningún archivo conocido de la época.</div></div>
+        <div class="tpl-field"><div class="tpl-fl">Resultado provisional</div><div class="tpl-fv ex">Análisis espectral de la tinta revela anomalías incompatibles con la época atribuida. Hipótesis de falsificación gana fuerza. Pendiente confirmación por experto externo.</div></div>` },
+      { id:'evidencias', label:'7. Inventario de evidencias', content: `
+        <div class="tpl-sec-title">7. Inventario maestro de evidencias</div>
+        <div class="tpl-note">Ninguna evidencia entra al expediente sin identificador único.</div>
+        <table class="tpl-table">
+          <tr><th>ID</th><th>Tipo</th><th>Descripción breve</th><th>Origen</th><th>Responsable</th><th>Estado</th></tr>
+          <tr><td class="tid">E-001</td><td>imagen</td><td>Escaneo de alta resolución del manuscrito</td><td>Archivo General de PR</td><td>Tanisha M.</td><td>Preservada</td></tr>
+          <tr><td class="tid">E-002</td><td>texto</td><td>Transcripción paleográfica de 1987</td><td>Fondo Cruz-Monclova</td><td>Alejandro F.</td><td>Validada</td></tr>
+          <tr><td class="tid">E-003</td><td>análisis</td><td>Reporte espectral de tintas</td><td>Lab. Conservación UPR</td><td>Sofía M.</td><td>En análisis</td></tr>
+        </table>` },
+      { id:'ia', label:'11. Registro de IA', content: `
+        <div class="tpl-sec-title">11. Registro de uso de IA</div>
+        <table class="tpl-table">
+          <tr><th>ID</th><th>Herramienta</th><th>Fecha</th><th>Propósito</th><th>Resultado</th><th>Validación</th></tr>
+          <tr><td class="tid">IA-001</td><td>Dr. Watson GPT 2025</td><td>2026-04-22</td><td>Análisis comparativo de patrones de escritura</td><td>4 inconsistencias tipográficas identificadas</td><td>Sí — 3/4 confirmadas</td></tr>
+          <tr><td class="tid">IA-002</td><td>Claude</td><td>2026-04-23</td><td>Apoyo en redacción del resumen ejecutivo</td><td>Borrador revisado y corregido por Yolanda</td><td>Sí</td></tr>
+        </table>
+        <div class="tpl-cb" style="margin-top:12px"><div class="tpl-cbx chk">✓</div> La IA fue usada como asistente, no como sustituto del juicio humano.</div>
+        <div class="tpl-cb"><div class="tpl-cbx chk">✓</div> Las salidas de IA fueron verificadas antes de adoptarse.</div>
+        <div class="tpl-cb"><div class="tpl-cbx chk">✓</div> No se usó IA para fabricar evidencia falsa.</div>` },
+      { id:'cierre', label:'20. Checklist de cierre', content: `
+        <div class="tpl-sec-title">20. Checklist final antes de entregar</div>
+        <div class="tpl-cb"><div class="tpl-cbx chk">✓</div> El expediente tiene título y código.</div>
+        <div class="tpl-cb"><div class="tpl-cbx chk">✓</div> El equipo de 5 está identificado.</div>
+        <div class="tpl-cb"><div class="tpl-cbx chk">✓</div> La pregunta rectora está clara.</div>
+        <div class="tpl-cb"><div class="tpl-cbx chk">✓</div> Las evidencias tienen ID único.</div>
+        <div class="tpl-cb"><div class="tpl-cbx chk">✓</div> La cadena de custodia fue registrada.</div>
+        <div class="tpl-cb"><div class="tpl-cbx chk">✓</div> Las fuentes fueron listadas.</div>
+        <div class="tpl-cb"><div class="tpl-cbx chk">✓</div> El uso de IA fue documentado.</div>
+        <div class="tpl-cb"><div class="tpl-cbx">☐</div> La conclusión está argumentada.</div>
+        <div class="tpl-cb"><div class="tpl-cbx chk">✓</div> El expediente fue revisado por el Quinto Elemento.</div>
+        <div class="tpl-cb"><div class="tpl-cbx">☐</div> El expediente está listo para evaluación.</div>` },
+    ]
+  },
+  {
+    sections: [
+      { id:'yaml', label:'Metadatos YAML', content: `
+        <div class="tpl-sec-title">Metadatos rápidos</div>
+        <div class="tpl-note">Completa este bloque antes de comenzar a llenar la ficha. El ID de evidencia debe ser único dentro del expediente.</div>
+        <div class="tpl-yaml"><span class="yk">evidencia_id</span>: <span class="yv">"E-003"</span><br><span class="yk">expediente_id</span>: <span class="yv">"EXP-UNICO-001"</span><br><span class="yk">titulo_evidencia</span>: <span class="yv">"Reporte espectral de tintas del manuscrito"</span><br><span class="yk">version_ficha</span>: <span class="yv">"1.0.0"</span><br><span class="yk">estado</span>: <span class="yv">"en_analisis"</span><br><span class="yk">fecha_registro</span>: <span class="yv">"2026-04-23"</span><br><span class="yk">hora_registro</span>: <span class="yv">"14:30"</span><br><span class="yk">responsable_registro</span>: <span class="yv">"Sofía Maldonado-Torres"</span><br><span class="yk">quinto_elemento_validador</span>: <span class="yv">"Yolanda Nieves-Cruz"</span></div>` },
+      { id:'identificacion', label:'1. Identificación', content: `
+        <div class="tpl-sec-title">1. Identificación general</div>
+        <div class="tpl-field"><div class="tpl-fl">Título de la evidencia</div><div class="tpl-fv ex">Reporte espectral de tintas del manuscrito — Laboratorio de Conservación UPR</div></div>
+        <div class="tpl-field"><div class="tpl-fl">ID de evidencia</div><div class="tpl-fv code">E-003</div></div>
+        <div class="tpl-field"><div class="tpl-fl">Caso o expediente asociado</div><div class="tpl-fv code">EXP-UNICO-001</div></div>
+        <div class="tpl-field"><div class="tpl-fl">Tipo de evidencia</div>
+          <div class="tpl-cb"><div class="tpl-cbx">☐</div> Texto</div>
+          <div class="tpl-cb"><div class="tpl-cbx">☐</div> Imagen</div>
+          <div class="tpl-cb"><div class="tpl-cbx chk">✓</div> Resultado de prueba (análisis espectral)</div>
+        </div>
+        <div class="tpl-field"><div class="tpl-fl">Estado actual</div>
+          <div class="tpl-cb"><div class="tpl-cbx">☐</div> Capturada</div>
+          <div class="tpl-cb"><div class="tpl-cbx chk">✓</div> En análisis</div>
+          <div class="tpl-cb"><div class="tpl-cbx">☐</div> Validada</div>
+        </div>` },
+      { id:'descripcion', label:'2. Descripción', content: `
+        <div class="tpl-sec-title">2. Descripción de la evidencia</div>
+        <div class="tpl-field"><div class="tpl-fl">Descripción breve</div><div class="tpl-fv ex">Reporte técnico de análisis espectral de las tintas del manuscrito en disputa. El reporte fue emitido por el Laboratorio de Conservación de la UPR tras análisis de fluorescencia de rayos X (XRF).</div></div>
+        <div class="tpl-field"><div class="tpl-fl">Descripción ampliada</div><div class="tpl-fv ex">El análisis XRF revela composición química de la tinta inconsistente con fórmulas de tinta comunes del siglo XIX en Puerto Rico. Se detectó presencia de dióxido de titanio (TiO₂), pigmento de uso comercial masivo introducido después de 1920. El papel presenta pH de 7.2, inusualmente neutro para documentos históricos del período.</div></div>
+        <div class="tpl-field"><div class="tpl-fl">Relación con el caso</div><div class="tpl-fv ex">Esta evidencia es crítica para descartar la autenticidad del manuscrito en la época atribuida. Si el TiO₂ se confirma, la falsificación del siglo XX (H1) queda fuertemente sustentada.</div></div>` },
+      { id:'cadena', label:'5. Cadena de custodia', content: `
+        <div class="tpl-sec-title">5. Cadena de custodia mínima</div>
+        <table class="tpl-table">
+          <tr><th>ID</th><th>Acción</th><th>Fecha</th><th>Hora</th><th>Responsable</th><th>Observaciones</th></tr>
+          <tr><td class="tid">CC-001</td><td>Captura inicial</td><td>2026-04-23</td><td>14:15</td><td>Sofía M.</td><td>PDF recibido por correo del Lab.</td></tr>
+          <tr><td class="tid">CC-002</td><td>Registro en ficha</td><td>2026-04-23</td><td>14:30</td><td>Sofía M.</td><td>ID asignado E-003</td></tr>
+          <tr><td class="tid">CC-003</td><td>Copia al repositorio</td><td>2026-04-23</td><td>15:00</td><td>Yolanda N.</td><td>Copia en /casos/caso-01/evidencias/</td></tr>
+          <tr><td class="tid">CC-004</td><td>Análisis o revisión</td><td>2026-04-24</td><td>09:30</td><td>Tanisha M.</td><td>Revisión de datos espectrales en sesión SES-004</td></tr>
+        </table>` },
+      { id:'confiabilidad', label:'7. Confiabilidad', content: `
+        <div class="tpl-sec-title">7. Evaluación de confiabilidad</div>
+        <div class="tpl-field"><div class="tpl-fl">Nivel preliminar</div>
+          <div class="tpl-cb"><div class="tpl-cbx chk">✓</div> Alto — fuente institucional con metodología verificable</div>
+        </div>
+        <div class="tpl-field"><div class="tpl-fl">Señales de confiabilidad</div>
+          <div class="tpl-cb"><div class="tpl-cbx chk">✓</div> Emitido por laboratorio universitario acreditado</div>
+          <div class="tpl-cb"><div class="tpl-cbx chk">✓</div> Metodología XRF es estándar en conservación documental</div>
+          <div class="tpl-cb"><div class="tpl-cbx chk">✓</div> Firmado por especialista con nombre e institución</div>
+        </div>
+        <div class="tpl-field"><div class="tpl-fl">Señales de alerta</div>
+          <div class="tpl-cb"><div class="tpl-cbx chk">✓</div> Solo analiza muestra pequeña (3 puntos del documento)</div>
+          <div class="tpl-cb"><div class="tpl-cbx chk">✓</div> Pendiente segunda opinión de experto externo</div>
+        </div>` },
+    ]
+  },
+  {
+    sections: [
+      { id:'yaml', label:'Metadatos YAML', content: `
+        <div class="tpl-sec-title">Metadatos rápidos</div>
+        <div class="tpl-note">Una bitácora por sesión. La redacta el Quinto Elemento. Cerrarla al terminar la sesión, no después.</div>
+        <div class="tpl-yaml"><span class="yk">sesion_id</span>: <span class="yv">"SES-004"</span><br><span class="yk">expediente_id</span>: <span class="yv">"EXP-UNICO-001"</span><br><span class="yk">equipo_id</span>: <span class="yv">"EQ-HUM-01"</span><br><span class="yk">fecha</span>: <span class="yv">"2026-04-24"</span><br><span class="yk">hora_inicio</span>: <span class="yv">"09:00"</span><br><span class="yk">hora_fin</span>: <span class="yv">"11:30"</span><br><span class="yk">duracion_aprox</span>: <span class="yv">"2h 30min"</span><br><span class="yk">lugar_o_entorno</span>: <span class="yv">"Lab. Humanidades 204"</span><br><span class="yk">responsable_redaccion</span>: <span class="yv">"Yolanda Nieves-Cruz"</span><br><span class="yk">estado_sesion</span>: <span class="yv">"cerrada"</span></div>` },
+      { id:'participacion', label:'2. Participación', content: `
+        <div class="tpl-sec-title">2. Participación del equipo</div>
+        <table class="tpl-table">
+          <tr><th>Nombre</th><th>Rol</th><th>Presencia</th><th>Aporte principal</th></tr>
+          <tr><td>Sofía Maldonado</td><td>Arquitectura</td><td>Presente</td><td>Coordinó revisión del reporte espectral E-003</td></tr>
+          <tr><td>Rodrigo Vega</td><td>Interfaz / UX</td><td>Presente</td><td>Actualizó tablero visual de evidencias</td></tr>
+          <tr><td>Tanisha Morales</td><td>Lógica / Análisis</td><td>Presente</td><td>Interpretó datos espectrales — detectó TiO₂</td></tr>
+          <tr><td>Alejandro Figueroa</td><td>Testing</td><td>Presente</td><td>Verificó 3 de 4 inconsistencias de Watson</td></tr>
+          <tr><td>Yolanda Nieves</td><td>Quinto Elemento</td><td>Presente</td><td>Redactó bitácora y actualizó cadena de custodia</td></tr>
+        </table>` },
+      { id:'desarrollo', label:'5. Desarrollo narrativo', content: `
+        <div class="tpl-sec-title">5. Desarrollo narrativo de la sesión</div>
+        <div class="tpl-field"><div class="tpl-fl">Inicio</div><div class="tpl-fv ex">La sesión arrancó con la revisión del reporte espectral E-003 recibido el día anterior. Sofía presentó el documento y Tanisha comenzó la lectura técnica. Se priorizó el análisis de la composición de la tinta sobre las otras evidencias pendientes.</div></div>
+        <div class="tpl-field"><div class="tpl-fl">Desarrollo</div><div class="tpl-fv ex">Tanisha identificó la presencia de dióxido de titanio (TiO₂) como hallazgo crítico. El equipo consultó a Dr. Watson GPT 2025 para comparación de patrones de escritura histórica: Watson identificó 4 inconsistencias tipográficas adicionales, de las cuales Alejandro verificó 3 con fuentes primarias. Rodrigo actualizó el tablero visual con los nuevos hallazgos. Hipótesis H1 ganó fuerza considerable.</div></div>
+        <div class="tpl-field"><div class="tpl-fl">Cierre</div><div class="tpl-fv ex">Se acordó contactar a experto externo del Archivo General de Puerto Rico para la próxima sesión. Yolanda cerró la bitácora y actualizó el expediente con los nuevos estados de evidencia. La sesión superó el objetivo principal establecido al inicio.</div></div>` },
+      { id:'ai', label:'8. Uso de IA', content: `
+        <div class="tpl-sec-title">8. Uso de IA durante la sesión</div>
+        <table class="tpl-table">
+          <tr><th>ID</th><th>Herramienta</th><th>Propósito</th><th>Resultado</th><th>Validado</th><th>Riesgo</th></tr>
+          <tr><td class="tid">IA-001</td><td>Dr. Watson GPT 2025</td><td>Análisis de patrones tipográficos históricos</td><td>4 inconsistencias identificadas</td><td>3/4 confirmadas</td><td>1 inconsistencia sin confirmar</td></tr>
+        </table>
+        <div style="margin-top:12px">
+          <div class="tpl-cb"><div class="tpl-cbx chk">✓</div> La IA se usó como apoyo, no como sustituto del equipo.</div>
+          <div class="tpl-cb"><div class="tpl-cbx chk">✓</div> Las salidas relevantes fueron verificadas con fuentes primarias.</div>
+          <div class="tpl-cb"><div class="tpl-cbx chk">✓</div> No se ocultó la intervención de IA.</div>
+        </div>` },
+      { id:'proximos', label:'13. Próximos pasos', content: `
+        <div class="tpl-sec-title">13. Próximos pasos</div>
+        <table class="tpl-table">
+          <tr><th>Prioridad</th><th>Acción</th><th>Responsable</th><th>Fecha objetivo</th></tr>
+          <tr><td>Alta</td><td>Contactar experto externo del Archivo General de PR</td><td>Sofía M.</td><td>2026-04-26</td></tr>
+          <tr><td>Alta</td><td>Completar sección 16 (Evaluación ética) del expediente</td><td>Yolanda N.</td><td>2026-04-25</td></tr>
+          <tr><td>Media</td><td>Actualizar matriz de hipótesis con nuevos hallazgos</td><td>Alejandro F.</td><td>2026-04-25</td></tr>
+          <tr><td>Baja</td><td>Preparar presentación intermedia para mentor</td><td>Rodrigo V.</td><td>2026-04-28</td></tr>
+        </table>` },
+    ]
+  }
+];
+
+let _activeTplSec = 0;
+function openTpl(idx) {
+  const t = TEMPLATES[idx];
+  const secs = TEMPLATE_SECTIONS[idx].sections;
+  _activeTplSec = 0;
+  const sidebar = secs.map((s,i)=>
+    `<button class="tpl-sb-btn${i===0?' tpl-active':''}" onclick="switchTplSec(${i},this)">${s.label}</button>`
+  ).join('');
+  document.getElementById('tplModalBox').innerHTML = `
+    <button class="modal-x" onclick="closeTpl()">✕</button>
+    <div class="tpl-m-header">
+      <span class="tpl-m-icon">${t.icon}</span>
+      <div><div class="tpl-m-ver">${t.version} · ${t.sections} secciones</div><div class="tpl-m-name">${t.name}</div></div>
+    </div>
+    <div class="tpl-layout">
+      <div class="tpl-sidebar">
+        <div class="tpl-sb-label">Secciones</div>
+        <div id="tplSidebar">${sidebar}</div>
+      </div>
+      <div class="tpl-content" id="tplContent">${secs[0].content}</div>
+    </div>`;
+  document.getElementById('tplModal').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function switchTplSec(i, btn) {
+  const idx = parseInt(document.getElementById('tplModalBox').dataset.idx || 0);
+  document.querySelectorAll('.tpl-sb-btn').forEach(b=>b.classList.remove('tpl-active'));
+  btn.classList.add('tpl-active');
+  const secs = TEMPLATE_SECTIONS[_currentTplIdx].sections;
+  document.getElementById('tplContent').innerHTML = secs[i].content;
+}
+let _currentTplIdx = 0;
+function openTpl(idx) {
+  _currentTplIdx = idx;
+  const t = TEMPLATES[idx];
+  const secs = TEMPLATE_SECTIONS[idx].sections;
+  const sidebar = secs.map((s,i)=>
+    `<button class="tpl-sb-btn${i===0?' tpl-active':''}" onclick="switchTplSec(${i},this)">${s.label}</button>`
+  ).join('');
+  document.getElementById('tplModalBox').innerHTML = `
+    <button class="modal-x" onclick="closeTpl()">✕</button>
+    <div class="tpl-m-header">
+      <span class="tpl-m-icon">${t.icon}</span>
+      <div><div class="tpl-m-ver">${t.version} · ${t.sections} secciones</div><div class="tpl-m-name">${t.name}</div></div>
+    </div>
+    <div class="tpl-layout">
+      <div class="tpl-sidebar">
+        <div class="tpl-sb-label">Secciones clave</div>
+        <div id="tplSidebar">${sidebar}</div>
+      </div>
+      <div class="tpl-content" id="tplContent">${secs[0].content}</div>
+    </div>`;
+  document.getElementById('tplModal').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function closeTpl() { document.getElementById('tplModal').style.display = 'none'; document.body.style.overflow = ''; }
+
+// ── NAV HELPER ─────────────────────────────────
+function goTab(id) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    if (b.getAttribute('onclick') && b.getAttribute('onclick').includes("'" + id + "'")) b.classList.add('active');
+  });
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+// ═══════════════════════════════════════════════
+// TEAMS DATA
+// ═══════════════════════════════════════════════
+const TEAM_COLORS = [
+  { accent: '#185fa5', avBg: '#dceaf8', avFg: '#185fa5' },
+  { accent: '#8b1e1e', avBg: '#f5dcdc', avFg: '#8b1e1e' },
+  { accent: '#2e5d4b', avBg: '#d6eae2', avFg: '#2e5d4b' },
+  { accent: '#c4813a', avBg: '#f5e4cc', avFg: '#c4813a' },
+  { accent: '#533ab7', avBg: '#e4dffa', avFg: '#533ab7' },
+];
+
+const TEAMS = [
+  {
+    id: 0, code: 'EQ-HUM-01', name: 'Equipo Clio', faculty: 'Humanidades · Historia',
+    caseNum: 1, caseName: 'El Manuscrito Extraviado',
+    progress: 78, sessions: 4, evidencias: 22, iaLogs: 9, badgesEarned: 9,
+    statusLabel: 'En validación', mentor: 'Dra. Carmen Quiñones',
+    members: [
+      { name: 'Sofía Maldonado-Torres',   ini: 'SM', role: 'Arquitectura',     roleShort: 'ARQ', spec: 'Archivística · Paleografía',    contrib: 'Coordinó cotejo de tres versiones del manuscrito con fuentes primarias' },
+      { name: 'Rodrigo Vega-Acosta',      ini: 'RV', role: 'Interfaz / UX',   roleShort: 'UX',  spec: 'Diseño editorial · Tipografía histórica', contrib: 'Diseñó tablero de evidencias comparativas con línea de tiempo visual' },
+      { name: 'Tanisha Morales-Rivera',   ini: 'TM', role: 'Lógica · Análisis',roleShort: 'LOG', spec: 'Crítica textual · Filología',   contrib: 'Detectó anomalías en la tinta: espectro incompatible con época atribuida' },
+      { name: 'Alejandro Figueroa-Ortiz', ini: 'AF', role: 'Testing',          roleShort: 'QA',  spec: 'Verificación de fuentes',       contrib: 'Validó 3 de 4 inconsistencias tipográficas señaladas por Watson' },
+      { name: 'Yolanda Nieves-Cruz',      ini: 'YN', role: 'Quinto Elemento',  roleShort: 'Q5',  spec: 'Custodia archivística',         contrib: 'Mantuvo cadena de custodia de las 3 fichas de evidencia abiertas', q5: true },
+    ],
+    pregunta: '¿Es auténtico el manuscrito, una mala atribución o una falsificación reciente?',
+    hipotesis: [
+      { id: 'H1', text: 'Falsificación del siglo XX con tinta envejecida artificialmente.', status: 'strong' },
+      { id: 'H2', text: 'Mala atribución de otra figura histórica de la época.', status: 'open' },
+      { id: 'H3', text: 'Manuscrito auténtico pero descontextualizado intencionalmente.', status: 'weak' },
+    ],
+    badges: [
+      { name: 'Ojo de Baker Street', earned: true }, { name: 'Cazador de Fuentes', earned: true },
+      { name: 'Escriba del Caso', earned: true }, { name: 'Custodio de Evidencias', earned: true },
+      { name: 'Watson Bien Consultado', earned: true }, { name: 'Doble Verificación', earned: true },
+      { name: 'Triangulador de la Verdad', earned: false }, { name: 'Cadena de Oro', earned: false },
+    ],
+    bitacora: {
+      ses: 'SES-004', quien: 'Yolanda Nieves-Cruz (Quinto Elemento)',
+      texto: 'Se cotejaron tres versiones del manuscrito: imagen escaneada del archivo, transcripción de 1987 y referencia bibliográfica de Cruz-Monclova. La tinta del original muestra anomalías espectrales incompatibles con la época atribuida. Tanisha identificó que el papel tiene marcas de agua posteriores al período. Hipótesis H1 gana fuerza. Alejandro preparará checklist de verificación para la próxima sesión con experto externo en documentos históricos puertorriqueños.',
+    },
+    aiLog: { tool: 'Dr. Watson GPT 2025', uso: 'Análisis comparativo de patrones de escritura y detección de anacronismos tipográficos.', resultado: 'Identificó 4 inconsistencias tipográficas. El equipo verificó 3 de 4 con fuentes primarias independientes. La cuarta requiere confirmación de experto.', validado: true },
+    evidencias: [
+      { id: 'E-001', tipo: 'imagen', desc: 'Escaneo de alta resolución del manuscrito original', status: 'validated' },
+      { id: 'E-002', tipo: 'texto', desc: 'Transcripción paleográfica de 1987 — Archivo General de Puerto Rico', status: 'validated' },
+      { id: 'E-003', tipo: 'análisis', desc: 'Reporte espectral de tintas — Laboratorio de conservación UPR', status: 'analysis' },
+      { id: 'E-004', tipo: 'biblio', desc: 'Referencia Cruz-Monclova 1952 — Historia de Puerto Rico Vol. II', status: 'validated' },
+    ],
+  },
+  {
+    id: 1, code: 'EQ-COM-02', name: 'Equipo Hermes', faculty: 'Comunicación · Periodismo',
+    caseNum: 2, caseName: 'La Portada Viral',
+    progress: 62, sessions: 3, evidencias: 31, iaLogs: 14, badgesEarned: 8,
+    statusLabel: 'En investigación', mentor: 'Prof. Rafael Meléndez',
+    members: [
+      { name: 'Omar Delgado-Sánchez',    ini: 'OD', role: 'Arquitectura',    roleShort: 'ARQ', spec: 'Producción digital · Multimedia', contrib: 'Estructuró el tablero de análisis de circulación viral en 3 capas' },
+      { name: 'Valeria Ramos-Colón',     ini: 'VR', role: 'Interfaz / UX',  roleShort: 'UX',  spec: 'Visualización de datos noticiosos', contrib: 'Diseñó mapa visual de propagación de la portada por red social' },
+      { name: 'Keisha Pérez-Burgos',     ini: 'KP', role: 'Lógica · Análisis',roleShort:'LOG', spec: 'Fact-checking · Análisis de redes', contrib: 'Localizó la portada original en el archivo web del medio — timestamp manipulado confirmado' },
+      { name: 'Javier Suárez-Marín',    ini: 'JS', role: 'Testing',         roleShort: 'QA',  spec: 'Verificación de metadatos EXIF',  contrib: 'Extrajo metadatos EXIF y confirmó edición posterior a la publicación original' },
+      { name: 'Camila Hernández-Agosto', ini: 'CH', role: 'Quinto Elemento', roleShort: 'Q5', spec: 'Bitácora periodística · Cadena editorial', contrib: 'Documentó el flujo completo de capturas y registró 3 cuentas bot identificadas', q5: true },
+    ],
+    pregunta: '¿La portada es real, manipulada, sacada de contexto o completamente inventada?',
+    hipotesis: [
+      { id: 'H1', text: 'Portada real con titular modificado 3 semanas después de la publicación original.', status: 'strong' },
+      { id: 'H2', text: 'Imagen auténtica descontextualizada intencionadamente para inflamar debate político.', status: 'open' },
+      { id: 'H3', text: 'Fabricación completa usando plantilla del medio.', status: 'weak' },
+    ],
+    badges: [
+      { name: 'Cazador de Fuentes', earned: true }, { name: 'Ojo de Baker Street', earned: true },
+      { name: 'Watson Bien Consultado', earned: true }, { name: 'Doble Verificación', earned: true },
+      { name: 'Triangulador de la Verdad', earned: false }, { name: 'Tablero Elocuente', earned: false },
+      { name: 'Voz del Detective', earned: true }, { name: 'Sincronía de Laboratorio', earned: true },
+    ],
+    bitacora: {
+      ses: 'SES-003', quien: 'Camila Hernández-Agosto (Quinto Elemento)',
+      texto: 'Keisha localizó la portada original en el archivo web del medio. Análisis de metadatos por Javier revela edición posterior a la publicación original: timestamp modificado y header EXIF alterado. El titular fue cambiado 3 semanas después del artículo real. Watson identificó 3 cuentas bot que amplificaron la portada en las primeras 2 horas de circulación. El equipo documentó cada hallazgo con capturas autenticadas. Pendiente: identificar el origen del primer posteo del titular modificado.',
+    },
+    aiLog: { tool: 'Dr. Watson GPT 2025', uso: 'Análisis de patrones de circulación viral e identificación de cuentas automatizadas.', resultado: 'Identificó 3 cuentas bot con comportamiento coordinado en las primeras 2h. Keisha verificó manualmente con herramienta Botometer — confirmado 2 de 3.', validado: true },
+    evidencias: [
+      { id: 'E-001', tipo: 'captura', desc: 'Portada viral — captura con metadatos de descarga', status: 'validated' },
+      { id: 'E-002', tipo: 'archivo', desc: 'Portada original en Wayback Machine — fecha 3 semanas anterior', status: 'validated' },
+      { id: 'E-003', tipo: 'EXIF', desc: 'Reporte de metadatos EXIF — software Adobe y timestamp', status: 'analysis' },
+      { id: 'E-004', tipo: 'log', desc: 'Registro de 3 cuentas bot — Botometer + capturas de perfil', status: 'analysis' },
+    ],
+  },
+  {
+    id: 2, code: 'EQ-BIO-03', name: 'Equipo Darwin', faculty: 'Ciencias Naturales · Biología',
+    caseNum: 3, caseName: 'El Jardín de las Especies Imposibles',
+    progress: 45, sessions: 3, evidencias: 27, iaLogs: 11, badgesEarned: 7,
+    statusLabel: 'En investigación', mentor: 'Dr. Antonio Pagán-Jiménez',
+    members: [
+      { name: 'Daniela Reyes-Meléndez', ini: 'DR', role: 'Arquitectura',    roleShort: 'ARQ', spec: 'Taxonomía · Sistemática filogenética', contrib: 'Definió el protocolo de identificación taxonómica de 4 pasos del equipo' },
+      { name: 'Marcus Ruiz-Santiago',   ini: 'MR', role: 'Interfaz / UX',  roleShort: 'UX',  spec: 'Visualización científica · Infografías', contrib: 'Creó comparativa visual entre especie reportada y candidatas similares' },
+      { name: 'Isadora Fontánez-López', ini: 'IF', role: 'Lógica · Análisis',roleShort:'LOG', spec: 'Datos biológicos · GBIF · iNaturalist', contrib: 'Cruzó imagen con GBIF: especie candidata es Conocarpus erectus var. sericeus' },
+      { name: 'Emmanuel Torres-Díaz',   ini: 'ET', role: 'Testing',         roleShort: 'QA',  spec: 'Verificación científica · Peer review', contrib: 'Prepara checklist para confirmación con botánico externo del Jardín Botánico' },
+      { name: 'Natalia Correa-Medina',  ini: 'NC', role: 'Quinto Elemento', roleShort: 'Q5', spec: 'Bitácora de campo · Custodia de muestras', contrib: 'Documentó cadena de custodia de las 4 fichas fotográficas con coordenadas GPS', q5: true },
+    ],
+    pregunta: '¿Especie extraordinaria, confusión taxonómica, alteración visual o interpretación prematura?',
+    hipotesis: [
+      { id: 'H1', text: 'Confusión taxonómica con Conocarpus erectus var. sericeus — especie nativa presente en PR.', status: 'strong' },
+      { id: 'H2', text: 'Especie nativa catalogada incorrectamente en registros históricos anteriores.', status: 'open' },
+      { id: 'H3', text: 'Especie exótica introducida recientemente no registrada en PR.', status: 'weak' },
+    ],
+    badges: [
+      { name: 'Ojo de Baker Street', earned: true }, { name: 'Lupa de la Deducción', earned: true },
+      { name: 'Escriba del Caso', earned: true }, { name: 'Watson Bien Consultado', earned: true },
+      { name: 'Custodio de Evidencias', earned: false }, { name: 'Refutador Elegante', earned: false },
+      { name: 'Triangulador de la Verdad', earned: false },
+    ],
+    bitacora: {
+      ses: 'SES-003', quien: 'Natalia Correa-Medina (Quinto Elemento)',
+      texto: 'Isadora consultó GBIF e iNaturalist: la imagen fotográfica coincide morfológicamente con Conocarpus erectus var. sericeus, no con la especie extinta reportada. Daniela confirmó que la distribución geográfica de la especie candidata incluye costas de Puerto Rico. Emmanuel preparará checklist de verificación para la próxima sesión con botánico externo del Jardín Botánico de Puerto Rico. Marcus actualizó el tablero comparativo con las 3 especies candidatas y su distribución. Watson fue consultado pero su sugerencia taxonómica no fue adoptada sin verificación manual.',
+    },
+    aiLog: { tool: 'Dr. Watson GPT 2025 + Claude', uso: 'Identificación taxonómica asistida por imagen y análisis de distribución geográfica.', resultado: 'Sugirió 3 especies candidatas. Solo una coincide con distribución documentada en PR. El equipo marcó el hallazgo como "pendiente de validación" hasta confirmación por experto.', validado: false },
+    evidencias: [
+      { id: 'E-001', tipo: 'foto', desc: 'Fotografía de alta resolución del espécimen — coordenadas GPS incluidas', status: 'validated' },
+      { id: 'E-002', tipo: 'GBIF', desc: 'Registro GBIF de Conocarpus erectus var. sericeus — distribución PR', status: 'analysis' },
+      { id: 'E-003', tipo: 'biblio', desc: 'Flora de Puerto Rico — Little & Wadsworth 1964 — Referencia taxonómica', status: 'validated' },
+      { id: 'E-004', tipo: 'nota', desc: 'Observación de campo — morfología de hojas, ramas y frutos', status: 'captured' },
+    ],
+  },
+  {
+    id: 3, code: 'EQ-PSI-04', name: 'Equipo Freud', faculty: 'Ciencias Sociales · Psicología',
+    caseNum: 4, caseName: 'La Conducta Invisible',
+    progress: 33, sessions: 2, evidencias: 18, iaLogs: 6, badgesEarned: 5,
+    statusLabel: 'En investigación', mentor: 'Dra. Miriam Colón-Berríos',
+    members: [
+      { name: 'Ricardo Álvarez-Guerrero', ini: 'RA', role: 'Arquitectura',    roleShort: 'ARQ', spec: 'Metodología experimental · Diseño de investigación', contrib: 'Identificó los 5 criterios de evaluación del diseño metodológico del estudio' },
+      { name: 'Paola Castillo-Vega',      ini: 'PC', role: 'Interfaz / UX',  roleShort: 'UX',  spec: 'Comunicación de ciencia · Visualización', contrib: 'Diseñó la matriz comparativa de afirmaciones vs. datos del estudio' },
+      { name: 'Xiomara González-Pons',    ini: 'XG', role: 'Lógica · Análisis',roleShort:'LOG', spec: 'Estadística · Análisis crítico de métodos', contrib: 'Detectó muestra de conveniencia (n=23) y sesgo de selección confirmado' },
+      { name: 'Sebastián Moreno-Ríos',    ini: 'SM', role: 'Testing',         roleShort: 'QA',  spec: 'Validación metodológica · Ética de investigación', contrib: 'Preparará tabla de fallas metodológicas y recomendación ética para SES-003' },
+      { name: 'Amara Jiménez-Ortega',     ini: 'AJ', role: 'Quinto Elemento', roleShort: 'Q5', spec: 'Documentación ética · Protocolo IRB', contrib: 'Abrió sección de evaluación ética en el expediente y documentó 4 alertas de riesgo', q5: true },
+    ],
+    pregunta: '¿El estudio sostiene lo que afirma o incurre en errores metodológicos y sobreinterpretación?',
+    hipotesis: [
+      { id: 'H1', text: 'Muestra de conveniencia (n=23, un solo salón) invalida la generalización a "comportamiento estudiantil".', status: 'strong' },
+      { id: 'H2', text: 'Variable dependiente mal operacionalizada — el instrumento no mide lo que afirma medir.', status: 'open' },
+      { id: 'H3', text: 'Los datos son correctos pero la interpretación causal es ilegítima.', status: 'open' },
+    ],
+    badges: [
+      { name: 'Ojo de Baker Street', earned: true }, { name: 'Cazador de Fuentes', earned: true },
+      { name: 'Escriba del Caso', earned: true }, { name: 'Watson Bien Consultado', earned: true },
+      { name: 'Auditor de Sombras', earned: false }, { name: 'Refutador Elegante', earned: false },
+      { name: 'Guardián de Memorias', earned: false },
+    ],
+    bitacora: {
+      ses: 'SES-002', quien: 'Amara Jiménez-Ortega (Quinto Elemento)',
+      texto: 'Xiomara identificó que la muestra es de conveniencia (estudiantes voluntarios de un solo salón) y la conclusión habla de "comportamiento estudiantil general". El sesgo de selección quedó confirmado como falla crítica H1. Watson fue consultado para revisión del cuestionario: detectó 2 preguntas con doble negación y 1 escala de Likert mal balanceada; equipo verificó y confirmó los 3 hallazgos. Sebastián preparará la tabla de fallas metodológicas para la próxima sesión. Amara abrió sección 16 (Evaluación Ética) del expediente con 4 alertas de riesgo preliminares.',
+    },
+    aiLog: { tool: 'Dr. Watson GPT 2025', uso: 'Revisión del diseño del cuestionario e identificación de problemas de validez interna.', resultado: 'Detectó 2 preguntas con doble negación y 1 escala de Likert desbalanceada. El equipo verificó y confirmó los 3 hallazgos de forma independiente.', validado: true },
+    evidencias: [
+      { id: 'E-001', tipo: 'doc', desc: 'Cuestionario original del estudio — 15 ítems, escala Likert', status: 'validated' },
+      { id: 'E-002', tipo: 'tabla', desc: 'Tabla de resultados — n=23, distribución de respuestas', status: 'analysis' },
+      { id: 'E-003', tipo: 'resumen', desc: 'Resumen ejecutivo institucional — afirmaciones generalizadas', status: 'validated' },
+      { id: 'E-004', tipo: 'nota', desc: 'Notas metodológicas del investigador — parcialmente incompletas', status: 'captured' },
+    ],
+  },
+  {
+    id: 4, code: 'EQ-ADM-05', name: 'Equipo Fibonacci', faculty: 'Administración · Contabilidad',
+    caseNum: 5, caseName: 'Los Números del Decanato Fantasma',
+    progress: 19, sessions: 2, evidencias: 40, iaLogs: 14, badgesEarned: 4,
+    statusLabel: 'Apertura reciente', mentor: 'Prof. José Ayala-Vargas',
+    members: [
+      { name: 'Andrés Vázquez-Rodríguez', ini: 'AV', role: 'Arquitectura',    roleShort: 'ARQ', spec: 'Auditoría · Trazabilidad financiera', contrib: 'Diseñó la estructura del expediente contable con línea de tiempo de períodos fiscales' },
+      { name: 'Luna Pagán-Serrano',       ini: 'LP', role: 'Interfaz / UX',  roleShort: 'UX',  spec: 'Dashboards financieros · Reporting', contrib: 'Construyó tablero comparativo visual de las dos versiones de cifras en disputa' },
+      { name: 'Carlos Cotto-Rivera',      ini: 'CC', role: 'Lógica · Análisis',roleShort:'LOG', spec: 'Contabilidad · Análisis de discrepancias', contrib: 'Identificó el conflicto entre año fiscal e año calendario como fuente de la discrepancia de $240K' },
+      { name: 'Isabella Mercado-Benítez', ini: 'IM', role: 'Testing',         roleShort: 'QA',  spec: 'Verificación de cuentas · Auditoría', contrib: 'Revisó líneas con sumas inconsistentes — 2 errores de transcripción + 1 reasignación intencional' },
+      { name: 'Felipe Ayala-Ramos',       ini: 'FA', role: 'Quinto Elemento', roleShort: 'Q5', spec: 'Documentación financiera · Custodia documental', contrib: 'Mantuvo inventario de 40 evidencias con categorización por tipo y estado', q5: true },
+    ],
+    pregunta: '¿Los números son erróneos, manipulados, mal interpretados o simplemente fuera de contexto?',
+    hipotesis: [
+      { id: 'H1', text: 'Error de período: informe oficial usa año fiscal, conversaciones internas usan año calendario.', status: 'strong' },
+      { id: 'H2', text: 'Partida presupuestaria reasignada sin actualizar el informe comparativo.', status: 'open' },
+      { id: 'H3', text: 'Manipulación intencional para ocultar deficit en una partida específica.', status: 'open' },
+    ],
+    badges: [
+      { name: 'Escriba del Caso', earned: true }, { name: 'Cazador de Fuentes', earned: true },
+      { name: 'Custodio de Evidencias', earned: true }, { name: 'Watson Bien Consultado', earned: true },
+      { name: 'Sincronía de Laboratorio', earned: false }, { name: 'Archivo Vivo', earned: false },
+      { name: 'Tablero Elocuente', earned: false }, { name: 'Triangulador de la Verdad', earned: false },
+    ],
+    bitacora: {
+      ses: 'SES-002', quien: 'Felipe Ayala-Ramos (Quinto Elemento)',
+      texto: 'Carlos identificó que el informe oficial usa año fiscal (julio–junio) mientras las conversaciones internas usan año calendario (enero–diciembre). La discrepancia de $240,000 desaparece al alinear ambos períodos: se trata de la misma partida vista en dos marcos temporales distintos. Watson analizó las tablas financieras y señaló 3 líneas con sumas inconsistentes: Isabella verificó — 2 son errores de transcripción menores, 1 es una reasignación intencional documentada en acta de agosto. Pendiente: conseguir actas de reunión del decanato para confirmar H1 y cerrar H3.',
+    },
+    aiLog: { tool: 'Dr. Watson GPT 2025', uso: 'Análisis de coherencia entre tablas financieras e identificación de inconsistencias aritméticas.', resultado: 'Señaló 3 líneas con sumas inconsistentes. Isabella verificó: 2 son errores de transcripción, 1 es una reasignación presupuestaria intencional ya documentada.', validado: true },
+    evidencias: [
+      { id: 'E-001', tipo: 'informe', desc: 'Informe financiero oficial del decanato — año fiscal 2023-24', status: 'validated' },
+      { id: 'E-002', tipo: 'email', desc: 'Fragmentos de correos internos con cifras en disputa', status: 'analysis' },
+      { id: 'E-003', tipo: 'tabla', desc: 'Tabla comparativa año fiscal vs. año calendario — elaborada por equipo', status: 'captured' },
+      { id: 'E-004', tipo: 'acta', desc: 'Acta de reunión agosto 2023 — reasignación de partida presupuestaria', status: 'analysis' },
+    ],
+  },
+];
+
+// ── TEAMS RENDER ────────────────────────────────
+function renderTeamsOverview() {
+  const grid = document.getElementById('teamsGrid');
+  grid.innerHTML = TEAMS.map(t => {
+    const col = TEAM_COLORS[t.id];
+    const progColor = t.progress >= 70 ? '#2e5d4b' : t.progress >= 40 ? '#c4813a' : '#185fa5';
+    const miniAvatars = t.members.slice(0, 5).map(m =>
+      `<div class="team-mini-av" style="background:${col.avBg};color:${col.avFg}">${m.ini}</div>`
+    ).join('');
+    return `
+    <div class="team-card" onclick="openTeam(${t.id})">
+      <div class="team-card-accent" style="background:${col.accent}"></div>
+      <div class="team-card-body">
+        <div class="team-id-row">
+          <span class="team-code">${t.code}</span>
+          <div class="team-status-dot"></div>
+        </div>
+        <div class="team-name">${t.name}</div>
+        <div class="team-faculty">${t.faculty}</div>
+        <div class="team-case-tag">Caso ${t.caseNum} — ${t.caseName}</div>
+        <div class="team-prog-label">
+          <span>Progreso del caso</span>
+          <span style="color:${progColor};font-weight:600">${t.progress}%</span>
+        </div>
+        <div class="team-prog-track">
+          <div class="team-prog-fill" style="width:${t.progress}%;background:${progColor}"></div>
+        </div>
+      </div>
+      <div class="team-card-footer">
+        <div class="team-mini-members">${miniAvatars}</div>
+        <div class="team-footer-stats">
+          <span><span>${t.evidencias}</span> evid.</span>
+          <span><span>${t.badgesEarned}</span> badges</span>
+          <span><span>${t.sessions}</span> ses.</span>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openTeam(id) {
+  const t = TEAMS[id];
+  const col = TEAM_COLORS[id];
+  const progColor = t.progress >= 70 ? '#2e5d4b' : t.progress >= 40 ? '#c4813a' : '#185fa5';
+
+  const membersHTML = t.members.map(m => `
+    <div class="member-card">
+      ${m.q5 ? '<div class="member-q5-badge">Q5</div>' : ''}
+      <div class="member-avatar" style="background:${col.avBg};color:${col.avFg}">${m.ini}</div>
+      <div class="member-role">${m.roleShort}</div>
+      <div class="member-name">${m.name}</div>
+      <div class="member-spec">${m.spec}</div>
+      <div class="member-contrib">${m.contrib}</div>
+    </div>`).join('');
+
+  const hypHTML = t.hipotesis.map(h => `
+    <div class="hypothesis-row">
+      <span class="hyp-tag">${h.id}</span>
+      <span class="hyp-text">${h.text}</span>
+      <span class="hyp-status ${h.status === 'strong' ? 'hyp-strong' : h.status === 'open' ? 'hyp-open' : 'hyp-weak'}">
+        ${h.status === 'strong' ? 'Fuerte' : h.status === 'open' ? 'Abierta' : 'Débil'}
+      </span>
+    </div>`).join('');
+
+  const badgesHTML = t.badges.map(b =>
+    `<span class="tbadge-pill ${b.earned ? 'tbadge-earned' : 'tbadge-pending'}">${b.name}</span>`
+  ).join('');
+
+  const evHTML = t.evidencias.map(e => `
+    <div class="ev-row">
+      <span class="ev-id">${e.id}</span>
+      <span class="ev-type">${e.tipo}</span>
+      <span class="ev-desc">${e.desc}</span>
+      <span class="ev-status ${e.status === 'validated' ? 'ev-validated' : e.status === 'analysis' ? 'ev-analysis' : 'ev-captured'}">
+        ${e.status === 'validated' ? 'Validada' : e.status === 'analysis' ? 'En análisis' : 'Capturada'}
+      </span>
+    </div>`).join('');
+
+  document.getElementById('teamDetailContent').innerHTML = `
+    <div class="tdetail-header" data-teamname="${t.name}">
+      <div class="tdetail-eyebrow">${t.code} · ${t.faculty}</div>
+      <div class="tdetail-title">${t.name}</div>
+      <div class="tdetail-case">Caso ${t.caseNum} — ${t.caseName}</div>
+      <div class="tdetail-chips">
+        <span class="tdetail-chip hi">${t.statusLabel}</span>
+        <span class="tdetail-chip">${t.sessions} sesiones completadas</span>
+        <span class="tdetail-chip">Mentor: ${t.mentor}</span>
+        <span class="tdetail-chip">${t.badgesEarned} badges otorgados</span>
+      </div>
+    </div>
+
+    <div class="tdetail-stats">
+      <div class="tdetail-stat"><div class="tdetail-stat-n">${t.evidencias}</div><div class="tdetail-stat-l">Evidencias</div></div>
+      <div class="tdetail-stat"><div class="tdetail-stat-n">${t.iaLogs}</div><div class="tdetail-stat-l">Logs de IA</div></div>
+      <div class="tdetail-stat"><div class="tdetail-stat-n">${t.sessions}</div><div class="tdetail-stat-l">Sesiones</div></div>
+      <div class="tdetail-stat"><div class="tdetail-stat-n" style="color:${progColor}">${t.progress}%</div><div class="tdetail-stat-l">Progreso</div></div>
+    </div>
+
+    <div class="tdetail-section-label">Equipo de 5 — Junior DevOps</div>
+    <div class="members-grid">${membersHTML}</div>
+
+    <div class="tdetail-two-col">
+      <div class="tdetail-card">
+        <div class="tdetail-section-label">Investigación activa</div>
+        <div class="tcase-question">${t.pregunta}</div>
+        <div class="tprog-row">
+          <span class="tprog-label">Avance del caso</span>
+          <span class="tprog-pct">${t.progress}%</span>
+        </div>
+        <div class="tprog-bar-track">
+          <div class="tprog-bar-fill" style="width:${t.progress}%;background:${progColor}"></div>
+        </div>
+        <div style="margin-top:16px">
+          <div class="tdetail-section-label">Hipótesis activas</div>
+          ${hypHTML}
+        </div>
+      </div>
+      <div class="tdetail-card">
+        <div class="tdetail-section-label">Badges (${t.badgesEarned} otorgados)</div>
+        <div class="tbadges-grid">${badgesHTML}</div>
+      </div>
+    </div>
+
+    <div class="tdetail-log">
+      <div class="tlog-header">
+        <div class="tdetail-section-label" style="margin:0">Última bitácora de sesión</div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <span class="tlog-sesid">${t.bitacora.ses}</span>
+          <span class="tlog-quien">${t.bitacora.quien}</span>
+        </div>
+      </div>
+      <div class="tlog-body">${t.bitacora.texto}</div>
+      <div class="tlog-ai-section">
+        <div class="tlog-ai-title">Registro de IA — ${t.bitacora.ses}</div>
+        <div class="tlog-ai-row">
+          <span class="tlog-ai-tool">${t.aiLog.tool}</span>
+          <span class="tlog-ai-text"><strong>Uso:</strong> ${t.aiLog.uso} <strong>Resultado:</strong> ${t.aiLog.resultado}</span>
+          <span class="tlog-ai-ok ${t.aiLog.validado ? 'ok' : 'pending'}">${t.aiLog.validado ? 'Validado ✓' : 'Pendiente'}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="evidence-timeline">
+      <div class="tdetail-section-label">Registro de evidencias — selección</div>
+      ${evHTML}
+    </div>
+  `;
+
+  document.getElementById('teams-overview-view').style.display = 'none';
+  document.getElementById('teams-detail-view').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function backToTeams() {
+  document.getElementById('teams-overview-view').style.display = 'block';
+  document.getElementById('teams-detail-view').style.display = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', function() {
+  renderCases();
+  renderBadgesFilter();
+  renderBadgesGrid();
+  renderGlossary(GLOSSARY);
+  renderTemplates();
+  renderTeamsOverview();
+  document.getElementById('glossaryCount').textContent = `${GLOSSARY.length} términos en el glosario`;
+});
+</script>
+<!-- ── CASE MODAL ─────────────────────────────── -->
+<div id="caseModal" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeCase()">
+  <div class="modal-box" id="caseModalBox"></div>
+</div>
+
+<!-- ── BADGE MODAL ────────────────────────────── -->
+<div id="badgeModal" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeBadge()">
+  <div class="modal-box bm-box" id="badgeModalBox"></div>
+</div>
+
+<!-- ── TEMPLATE MODAL ─────────────────────────── -->
+<div id="tplModal" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeTpl()">
+  <div class="modal-box tpl-box" id="tplModalBox"></div>
+</div>
+
+</body>
+</html>
